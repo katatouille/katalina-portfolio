@@ -179,7 +179,7 @@ a.plain:hover { color: var(--accent); }
 
 .island {
   display: block;
-  margin: 0 auto 2.2rem;
+  margin: 0 auto 1.1rem;
   width: 283px;                 /* native size — the dot art blurs if scaled up */
   max-width: 100%;
   height: auto;
@@ -202,7 +202,7 @@ a.plain:hover { color: var(--accent); }
   font-weight: 300;
   line-height: 1.35;
   letter-spacing: -0.012em;
-  margin: 0 0 2.4rem;
+  margin: 0 0 1.2rem;
   text-wrap: balance;
 }
 
