@@ -180,7 +180,7 @@ a.plain:hover { color: var(--accent); }
 .island {
   display: block;
   margin: 0 auto .6rem;
-  width: 283px;                 /* native size — the dot art blurs if scaled up */
+  width: 284px;                 /* vector now, so this is just the chosen display size */
   max-width: 100%;
   height: auto;
   opacity: .92;
