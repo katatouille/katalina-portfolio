@@ -179,7 +179,7 @@ a.plain:hover { color: var(--accent); }
 
 .island {
   display: block;
-  margin: 0 auto 1.1rem;
+  margin: 0 auto .6rem;
   width: 283px;                 /* native size — the dot art blurs if scaled up */
   max-width: 100%;
   height: auto;
@@ -202,7 +202,7 @@ a.plain:hover { color: var(--accent); }
   font-weight: 300;
   line-height: 1.35;
   letter-spacing: -0.012em;
-  margin: 0 0 1.2rem;
+  margin: 0 0 .65rem;
   text-wrap: balance;
 }
 
@@ -422,6 +422,25 @@ p { margin: 0 0 1.1rem; }
 .tags li { display: inline; }
 .tags li::after { content: ", "; }
 .tags li:last-child::after { content: ""; }
+
+/* the standalone technologies list under career — a wrapping row of chips,
+   distinct from the comma-separated .tags used inline in project meta */
+.tech-tags {
+  list-style: none;
+  margin: .85rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+.tech-tags li {
+  font-size: .88rem;
+  font-weight: 300;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .32rem .9rem;
+}
 
 /* next-project preview card: a sneak peek of the hero image you're headed to */
 .next-link {
