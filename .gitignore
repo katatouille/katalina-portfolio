@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# full-size originals — kept locally as backup, not needed on the web
+assets/_originals/
+
+# the raw desktop font files; only the .woff2 files are used by the site
+fonts/neue haas copy/
+fonts/*.ttf
+
+# heavy leftovers from the previous version of the site
+_archive/assets/
+
+# Claude Code / Cowork session housekeeping, not part of the site
+.claude/
+Claude outputs/
+
+# stray temp files from the folder sync
+.fuse_hidden*

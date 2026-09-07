@@ -1,0 +1,9 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+masquerade-banner.png = Masquerade Ball banner
+masquerade-pitch-deck.jpg = Masquerade Ball: Club Nothing Funding Proposal

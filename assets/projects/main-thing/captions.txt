@@ -1,0 +1,19 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+mt-01.jpg = Final logomark
+mt-02.jpg = Peek at the Figma board: validating the name, brand positioning matrix, brand audits, moodboard directions, logo iterations, logomark testing as the app icon
+mt-03.jpg = Peek at the Figma board: pitch deck testing and creation, plus color palette testing on logomark and website
+from-brand-exploration-deck-direction-1.jpg = From the brand exploration deck: Direction 1
+mt-05.jpg = From the brand exploration deck: the chosen path, Direction 2
+mt-final-logotype.jpg = Final logotype
+mt-persona-pitch.jpg = Pitch deck persona draft
+mt-direction-3.jpg = From the brand exploration deck: Direction 3
+mt-pitch-intro.jpg = Pitch deck intro draft
+mt-pitch-problem.jpg = Pitch problem draft
+mt-pitch-solution.jpg = Pitch problem draft
+site-design-for-mt.jpg = V1 Site Design

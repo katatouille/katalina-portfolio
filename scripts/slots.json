@@ -1,0 +1,304 @@
+{
+ "gabriel-locke": [
+  {
+   "n": 1,
+   "base": "01-home-page",
+   "caption": "Home page",
+   "hint": "image: screencapture-gabriel-locke home page"
+  },
+  {
+   "n": 2,
+   "base": "02-website-result-page-from-the-final",
+   "caption": "Website result page from the final brand deck",
+   "hint": "image: website result page from the final brand deck"
+  },
+  {
+   "n": 3,
+   "base": "03-social-media-templates",
+   "caption": "Social media templates",
+   "hint": "image: social media templates"
+  },
+  {
+   "n": 4,
+   "base": "04-books-page-note-parallax-animations-affect",
+   "caption": "Books page. Note: parallax animations affect how this screenshot was rendered, so visit the site for the full effect.",
+   "hint": "image: books page (parallax animations affect the screenshot)"
+  },
+  {
+   "n": 5,
+   "base": "05-a-peek-at-the-drive-with",
+   "caption": "A peek at the drive with all deliverables: brand foundation, custom how-to guide for Squarespace, social foundation, initial mood board, social media assets, web assets, fonts",
+   "hint": "image: peek at the drive with all deliverables"
+  }
+ ],
+ "slate": [
+  {
+   "n": 1,
+   "base": "01-peek-at-the-figma-board-research",
+   "caption": "Peek at the Figma board. Research at a glance: brand audits of competitors, homepage overviews of competitors, a UX/UI positioning matrix, audience and tone, and a lite competitor technical and pricing comparison",
+   "hint": "image: Screenshot_2026-08-10_at_12.34.24_AM.png (Figma board peek)"
+  },
+  {
+   "n": 2,
+   "base": "02-brand-overview",
+   "caption": "Brand overview",
+   "hint": "image: slate__logo_exploration_v3-05.png"
+  },
+  {
+   "n": 3,
+   "base": "03-the-iconography-rationale-slide",
+   "caption": "The iconography rationale slide",
+   "hint": "image: slate__logo_exploration_v3-13.png"
+  },
+  {
+   "n": 4,
+   "base": "04-iteration-grids-15-logomark-options-exploring",
+   "caption": "Iteration grids: 15 logomark options exploring composability, orchestration, and customization",
+   "hint": "images: slate__logo_exploration_v3-14 / -21 / -27 (iteration grids 1–3, originally a 3-column row)"
+  },
+  {
+   "n": 5,
+   "base": "05-a-closeup-logo-iteration-sample-with",
+   "caption": "A closeup logo iteration sample, with its source reference",
+   "hint": "images: slate__logo_exploration_v3-31.png + IMG_1146.png (closeup + source reference)"
+  },
+  {
+   "n": 6,
+   "base": "06-wordmark-option-and-wordmark-options-grid",
+   "caption": "Wordmark option and wordmark options grid: eight directions, all stenciled, geometric, or grotesque",
+   "hint": "images: slate__logo_exploration_v3-35.png + -33.png (wordmark option + options grid)"
+  },
+  {
+   "n": 7,
+   "base": "07-a-heading-option-and-usage-sample",
+   "caption": "A heading option and usage sample",
+   "hint": "images: slate__logo_exploration_v3-42.png + usage_sample.png"
+  },
+  {
+   "n": 8,
+   "base": "08-website-design-v1",
+   "caption": "Website design v1",
+   "hint": "image: Screenshot_2026-08-06_at_11.40.01_PM.png (website design v1)"
+  }
+ ],
+ "main-thing": [
+  {
+   "n": 1,
+   "base": "01-final-logomark",
+   "caption": "Final logomark",
+   "hint": "image: 16.png (final logomark)"
+  },
+  {
+   "n": 2,
+   "base": "02-peek-at-the-figma-board-validating",
+   "caption": "Peek at the Figma board: validating the name, brand positioning matrix, brand audits, moodboard directions, logo iterations, logomark testing as the app icon",
+   "hint": "image: Screenshot_2026-08-10_at_1.14.38_AM.png"
+  },
+  {
+   "n": 3,
+   "base": "03-peek-at-the-figma-board-pitch",
+   "caption": "Peek at the Figma board: pitch deck testing and creation, plus color palette testing on logomark and website",
+   "hint": "image: Screenshot_2026-08-10_at_1.18.46_AM.png"
+  },
+  {
+   "n": 4,
+   "base": "04-from-the-brand-exploration-deck-direction",
+   "caption": "From the brand exploration deck: Direction 1 and Direction 3",
+   "hint": "images: 7.png + 20.png (brand exploration deck, directions 1 and 3)"
+  },
+  {
+   "n": 5,
+   "base": "05-from-the-brand-exploration-deck-the",
+   "caption": "From the brand exploration deck: the chosen path, Direction 2",
+   "hint": "image: 13.png (chosen path, direction 2)"
+  },
+  {
+   "n": 6,
+   "base": "06-final-logotype",
+   "caption": "Final logotype",
+   "hint": "image: 17.png (final logotype)"
+  },
+  {
+   "n": 7,
+   "base": "07-pitch-deck-cards-title-intro-problem",
+   "caption": "Pitch deck cards: title, intro, problem & solution, persona",
+   "hint": "images: pitch deck title, intro, problem & solution, persona cards"
+  },
+  {
+   "n": 8,
+   "base": "08-site-design-two-homepage-versions-one",
+   "caption": "Site design: two homepage versions (one closing on social links, one on apply for membership) plus terms and privacy pages",
+   "hint": "image: Screenshot_2026-08-09_at_1.59.40_AM.png (site design, two homepage versions + terms and privacy)"
+  }
+ ],
+ "san-sound": [
+  {
+   "n": 1,
+   "base": "01-sanwear-gt",
+   "caption": "SANWEAR-GT",
+   "hint": "image: 20240614-T022.png (SANWEAR-GT)"
+  },
+  {
+   "n": 2,
+   "base": "02-sanwear-gt-guiding-graphics",
+   "caption": "SANWEAR-GT guiding graphics",
+   "hint": "image: SANWEAR-GT guiding graphics"
+  },
+  {
+   "n": 3,
+   "base": "03-sanwear-gt-packaging",
+   "caption": "SANWEAR-GT packaging",
+   "hint": "image: SANWEAR-GT packaging"
+  },
+  {
+   "n": 4,
+   "base": "04-sanwear-test-type-01-packaging-and",
+   "caption": "SANWEAR Test Type 01 packaging and Quick Start Guide",
+   "hint": "image: test_type_01__quick_start_guide.png"
+  },
+  {
+   "n": 5,
+   "base": "05-sanwear-quick-start-guide-plus-bts",
+   "caption": "SANWEAR Quick Start Guide, plus BTS making it (so gen z of me, I know)",
+   "hint": "images: quick start guide + BTS making it"
+  },
+  {
+   "n": 6,
+   "base": "06-sanwear-supra-colorway-proposal",
+   "caption": "SANWEAR × Supra colorway proposal",
+   "hint": "image: SANWEAR X Supra colorway proposal"
+  },
+  {
+   "n": 7,
+   "base": "07-sanwear-gt-hat-outside-graphics-and-inner",
+   "caption": "SANWEAR-GT hat: outside graphics and inner label",
+   "hint": "images: GT hat outside graphics + inner label"
+  },
+  {
+   "n": 8,
+   "base": "08-sanctuary-newsletter-samples-1-2-content",
+   "caption": "SANCTUARY newsletter samples 1 & 2: content & design for the SAN Sound subscriber list",
+   "hint": "pdfs: who_turned_on_the_lights.pdf + SANWEAR-GT_Presale_is_Now_Live.pdf"
+  },
+  {
+   "n": 9,
+   "base": "09-sanwear-iem-social-media-graphic",
+   "caption": "SANWEAR IEM social media graphic",
+   "hint": "image: BLUEPRINT_OF_AN_IEM.png"
+  },
+  {
+   "n": 10,
+   "base": "10-snippets-of-a-social-media-video",
+   "caption": "Snippets of a social media video I shot and edited to help with product usage",
+   "hint": "gifs: pariing_iem_intro_cut (1).gif + (2).gif"
+  },
+  {
+   "n": 11,
+   "base": "11-final-product-sanwear-gt-on-top-of",
+   "caption": "Final product: SANWEAR-GT on top of SANWEAR TT-01 boxes",
+   "hint": "image: GK0licyXMAEtTQL.jpeg (final product: SANWEAR-GT on top of SANWEAR TT-01 boxes)"
+  },
+  {
+   "n": 12,
+   "base": "12-sanwear-test-type-tt-00",
+   "caption": "SANWEAR TEST TYPE (TT) 00",
+   "hint": "from the SAN X account"
+  },
+  {
+   "n": 13,
+   "base": "13-sanwear-special-edition-colorways",
+   "caption": "SANWEAR Special Edition colorways",
+   "hint": "from the SAN X account"
+  },
+  {
+   "n": 14,
+   "base": "14-sanwear-faction-colorways",
+   "caption": "SANWEAR Faction colorways",
+   "hint": "from the SAN X account"
+  },
+  {
+   "n": 15,
+   "base": "15-sanwear-gt-final",
+   "caption": "The final SANWEAR-GT",
+   "hint": "from the SAN X account"
+  },
+  {
+   "n": 16,
+   "base": "16-sanwear-gt-on-tt-01-boxes",
+   "caption": "SANWEAR-GT on top of SANWEAR TT-01 boxes",
+   "hint": "from the SAN X account"
+  }
+ ],
+ "masquerade-ball": [
+  {
+   "n": 1,
+   "base": "01-masquerade-ball-banner",
+   "caption": "Masquerade Ball banner",
+   "hint": "image: notion_banner.png"
+  },
+  {
+   "n": 2,
+   "base": "02-masquerade-ball-funding-proposal-full-pdf",
+   "caption": "Masquerade Ball funding proposal — full PDF document",
+   "hint": "pdf: masquerade_ball_proposal-compressed.pdf — embed or link the full proposal here"
+  },
+  {
+   "n": 3,
+   "base": "03-proposal-spread",
+   "caption": "Proposal spread",
+   "hint": ""
+  }
+ ],
+ "by-the-bite": [
+  {
+   "n": 1,
+   "base": "01-walnut-banana-muffins-packaging-label-in",
+   "caption": "Walnut banana muffins packaging label in use",
+   "hint": "image: IMG_7703.jpg"
+  },
+  {
+   "n": 2,
+   "base": "02-final-logo-and-the-authentic-lebanese",
+   "caption": "Final logo, and the Authentic Lebanese Hummus packaging label",
+   "hint": "images: BYTHEBITE_LOGO_WHITEBACKGROUND.png + authentic_lebanese_hummus_-_final.png"
+  },
+  {
+   "n": 3,
+   "base": "03-first-attendance-at-the-local-farmers",
+   "caption": "First attendance at the local farmer's market: banner, product labels, product layout. Not pictured is the framed menu, which was getting printed at this time.",
+   "hint": "image: first farmers market attendance"
+  },
+  {
+   "n": 4,
+   "base": "04-menu-for-the-farmers-market",
+   "caption": "Menu for the farmers market",
+   "hint": "image: Screenshot_2026-08-05_at_11.32.35_PM.png"
+  },
+  {
+   "n": 5,
+   "base": "05-final-chosen-logos",
+   "caption": "Final chosen logos",
+   "hint": "image: logo_original.png"
+  },
+  {
+   "n": 6,
+   "base": "06-early-directions-explored-before-landing-on",
+   "caption": "Early directions explored before landing on the final mark",
+   "hint": "image: Screenshot_2025-04-10_at_2.08.43_PM.png"
+  }
+ ],
+ "silver-lining": [
+  {
+   "n": 1,
+   "base": "01-front-and-back-cover-for-the",
+   "caption": "Front and back cover for the physical CD",
+   "hint": "image: Screenshot_2026-08-05_at_11.29.42_PM.png"
+  },
+  {
+   "n": 2,
+   "base": "02-available-on-all-platforms",
+   "caption": "Available on all platforms",
+   "hint": "image: available on all platforms"
+  }
+ ]
+}

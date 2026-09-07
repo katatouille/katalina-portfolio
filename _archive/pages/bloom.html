@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bloom — Katalina.Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .bloom-main {
+    flex: 1;
+    display: flex;
+    position: relative;
+    background: linear-gradient(to top, rgba(255, 120, 224, 0.16) 0%, var(--paper) 62%);
+    overflow: hidden;
+    min-height: 70vh;
+  }
+  .bloom-canvas-wrap {
+    position: absolute;
+    inset: 0;
+  }
+  #bloom-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+  .bloom-caption {
+    position: absolute;
+    left: var(--edge);
+    bottom: 28px;
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    pointer-events: none;
+    user-select: none;
+  }
+  .bloom-caption span {
+    color: var(--ink);
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-top">
+  <header class="bar">
+    <a href="index.html" class="brand">Katalina<span class="suffix">.Design</span></a>
+    <nav class="nav">
+      <a href="work.html">Work</a>
+      <a href="info.html">Info</a>
+    </nav>
+  </header>
+</div>
+
+<main class="bloom-main">
+  <div class="bloom-canvas-wrap">
+    <canvas id="bloom-canvas"></canvas>
+  </div>
+  <div class="bloom-caption">ascii bloom &mdash; <span>click anywhere to regrow</span></div>
+</main>
+
+<footer class="bar bar--bottom">
+  <div class="foot-note">© 2026</div>
+</footer>
+
+<script>
+(function () {
+  var canvas = document.getElementById('bloom-canvas');
+  var ctx = canvas.getContext('2d');
+  var wrap = canvas.parentElement;
+
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var CELL = 11; // px between ascii dots, in CSS px
+  var GLYPHS = [' ', '.', ':', '*', 'o', '#', '@']; // low -> high density
+
+  var ink = '#141414';
+  var inkSoft = '#8f8f8f';
+  var accent = '#ff78e0';
+
+  var W = 0, H = 0, cols = 0, rows = 0;
+  var ambient = []; // sparse background dot field: {x,y,glyph,phase}
+
+  var flower = null; // current bloom cycle state
+  var lastClick = 0;
+
+  function resize() {
+    var rect = wrap.getBoundingClientRect();
+    W = Math.max(1, Math.floor(rect.width));
+    H = Math.max(1, Math.floor(rect.height));
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    cols = Math.ceil(W / CELL) + 1;
+    rows = Math.ceil(H / CELL) + 1;
+    buildAmbient();
+  }
+
+  function buildAmbient() {
+    ambient = [];
+    var count = Math.floor((cols * rows) * 0.028);
+    for (var i = 0; i < count; i++) {
+      ambient.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        glyph: GLYPHS[1 + Math.floor(Math.random() * 2)],
+        phase: Math.random() * Math.PI * 2,
+        speed: 0.4 + Math.random() * 0.6
+      });
+    }
+  }
+
+  function newFlower(cx, cy) {
+    var petals = 5 + Math.floor(Math.random() * 3); // 5..7
+    return {
+      cx: cx, cy: cy,
+      petals: petals,
+      sigma: 0.30 + Math.random() * 0.10,
+      baseFrac: 0.20 + Math.random() * 0.08,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() < 0.5 ? -1 : 1) * (0.05 + Math.random() * 0.05),
+      rMax: Math.min(W, H) * (0.22 + Math.random() * 0.06),
+      startedAt: performance.now(),
+      cycleMs: 9000
+    };
+  }
+
+  function petalEnvelope(theta, f) {
+    var best = 0;
+    for (var i = 0; i < f.petals; i++) {
+      var a = (i / f.petals) * Math.PI * 2;
+      var d = Math.abs(theta - a);
+      d = Math.min(d, Math.PI * 2 - d);
+      var bump = Math.exp(-(d * d) / (2 * f.sigma * f.sigma));
+      if (bump > best) best = bump;
+    }
+    return best;
+  }
+
+  // eased phases across one cycle: opening -> hold/sway -> closing -> dormant
+  function bloomTimeline(tNorm) {
+    var openEnd = 0.30, holdEnd = 0.66, closeEnd = 0.86;
+    if (tNorm < openEnd) {
+      var p = tNorm / openEnd;
+      return easeOutBack(p);
+    } else if (tNorm < holdEnd) {
+      return 1.0;
+    } else if (tNorm < closeEnd) {
+      var p2 = (tNorm - holdEnd) / (closeEnd - holdEnd);
+      return 1.0 - easeInCubic(p2) * 0.82;
+    } else {
+      return 0.18;
+    }
+  }
+
+  function easeOutBack(x) {
+    var c1 = 1.4, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+  }
+  function easeInCubic(x) { return x * x * x; }
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function hexToRgb(hex) {
+    var v = parseInt(hex.slice(1), 16);
+    return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
+  }
+  function mixColor(hexA, hexB, t) {
+    var a = hexToRgb(hexA), b = hexToRgb(hexB);
+    var r = Math.round(lerp(a[0], b[0], t));
+    var g = Math.round(lerp(a[1], b[1], t));
+    var bl = Math.round(lerp(a[2], b[2], t));
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+
+  function drawAmbient(now) {
+    ctx.font = '10px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i < ambient.length; i++) {
+      var d = ambient[i];
+      var flicker = 0.18 + 0.14 * Math.sin(now * 0.001 * d.speed + d.phase);
+      ctx.fillStyle = 'rgba(20,20,20,' + flicker.toFixed(3) + ')';
+      ctx.fillText(d.glyph, d.x, d.y);
+    }
+  }
+
+  function drawStem(f, bloomT, now) {
+    var stemH = Math.min(H, W) * 0.34 * Math.max(bloomT, 0.15);
+    var baseY = f.cy + f.rMax * 0.55;
+    var topY = baseY - stemH;
+    var steps = Math.max(4, Math.floor(stemH / CELL));
+    ctx.font = (CELL - 1) + 'px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i <= steps; i++) {
+      var t = i / steps;
+      var y = lerp(baseY, topY, t);
+      var sway = Math.sin(now * 0.0009 + t * 2.2) * (6 * t) + Math.sin(f.rot * 1.3) * 3 * t;
+      var x = f.cx + sway;
+      ctx.fillStyle = 'rgba(20,20,20,' + (0.35 + 0.35 * t).toFixed(2) + ')';
+      ctx.fillText(t > 0.94 ? ':' : '.', x, y);
+
+      // leaves at ~35% and ~62% up the stem
+      if (Math.abs(t - 0.4) < 0.02 || Math.abs(t - 0.68) < 0.02) {
+        var side = t < 0.5 ? -1 : 1;
+        drawLeaf(x, y, side, bloomT, now);
+      }
+    }
+  }
+
+  function drawLeaf(x, y, side, bloomT, now) {
+    var len = 5 * bloomT;
+    ctx.font = (CELL - 2) + 'px Menlo, Consolas, monospace';
+    for (var i = 1; i <= len; i++) {
+      var lx = x + side * i * (CELL * 0.8);
+      var ly = y - Math.sin((i / len) * Math.PI) * 5;
+      var glyph = i < len * 0.6 ? '.' : ':';
+      ctx.fillStyle = 'rgba(20,20,20,0.4)';
+      ctx.fillText(glyph, lx, ly);
+    }
+  }
+
+  function drawFlower(f, now) {
+    var tNorm = ((now - f.startedAt) % f.cycleMs) / f.cycleMs;
+    var bloomT = Math.max(0, bloomTimeline(tNorm));
+    var openness = tNorm < 0.30 ? Math.min(1, tNorm / 0.30) : (tNorm < 0.66 ? 1 : Math.max(0, 1 - (tNorm - 0.66) / 0.20));
+
+    f.rot += f.rotSpeed * 0.016;
+    var breathe = 1 + (tNorm > 0.30 && tNorm < 0.66 ? Math.sin(now * 0.0016) * 0.02 : 0);
+
+    drawStem(f, bloomT, now);
+
+    var Rmax = f.rMax * bloomT * breathe;
+    var baseR = Rmax * (f.baseFrac + (1 - f.baseFrac) * (1 - openness));
+    var pistilR = Rmax * 0.20;
+    var box = Rmax + CELL;
+
+    var x0 = Math.max(0, Math.floor((f.cx - box) / CELL) * CELL);
+    var x1 = Math.min(W, f.cx + box);
+    var y0 = Math.max(0, Math.floor((f.cy - box) / CELL) * CELL);
+    var y1 = Math.min(H, f.cy + box);
+
+    ctx.font = (CELL - 1) + 'px Menlo, Consolas, monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    for (var y = y0; y <= y1; y += CELL) {
+      for (var x = x0; x <= x1; x += CELL) {
+        var dx = x - f.cx;
+        var dy = y - f.cy;
+        var r = Math.hypot(dx, dy);
+        if (r > Rmax + CELL) continue;
+        var theta = Math.atan2(dy, dx) - f.rot;
+        var env = petalEnvelope(theta, f);
+        var boundary = baseR + (Rmax - baseR) * env;
+
+        var glyph = null, colorT = 0;
+        if (r < pistilR) {
+          glyph = '@';
+          colorT = 1;
+        } else if (r < boundary) {
+          var ratio = r / boundary;
+          var jitter = Math.random() < 0.06 ? 1 : 0;
+          if (ratio < 0.45) { glyph = '#'; colorT = 0.85; }
+          else if (ratio < 0.72) { glyph = jitter ? '#' : '*'; colorT = 0.6; }
+          else { glyph = jitter ? '*' : ':'; colorT = 0.35; }
+        }
+        if (!glyph) continue;
+        var petalColor = mixColor(inkSoft, accent, colorT * bloomT);
+        ctx.fillStyle = petalColor;
+        ctx.fillText(glyph, x, y);
+      }
+    }
+  }
+
+  function frame(now) {
+    ctx.clearRect(0, 0, W, H);
+    drawAmbient(now);
+    if (flower) drawFlower(flower, now);
+    requestAnimationFrame(frame);
+  }
+
+  canvas.addEventListener('click', function (e) {
+    var now = performance.now();
+    if (now - lastClick < 300) return;
+    lastClick = now;
+    var rect = canvas.getBoundingClientRect();
+    var x = e.clientX - rect.left;
+    var y = e.clientY - rect.top;
+    flower = newFlower(x, y);
+  });
+
+  window.addEventListener('resize', function () {
+    resize();
+    flower = newFlower(W / 2, H * 0.46);
+  });
+
+  resize();
+  flower = newFlower(W / 2, H * 0.46);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

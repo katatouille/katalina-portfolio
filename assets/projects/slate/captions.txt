@@ -1,0 +1,20 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+screenshot-2026-08-10-at-12-34-24-am.jpg = Peek at the Figma board. Research at a glance: brand audits of competitors, homepage overviews of competitors, a UX/UI positioning matrix, audience and tone, and a lite competitor technical and pricing comparison
+slate-logo-exploration-v3-05.jpg = Brand overview
+slate-logo-exploration-v3-13-1.jpg = The iconography rationale slide
+slate-logo-exploration-v3-14-1.jpg = Iteration grids: 15 logomark options exploring composability, orchestration, and customization
+img-1146.jpg = Screenshot during logo modeling in Shapr3D
+slate-logo-exploration-v3-35-1.jpg = Wordmark option
+slate-logo-exploration-v3-42-1.jpg = A heading option and usage sample
+screenshot-2026-08-06-at-11-40-01-pm.jpg = Website design v1
+slate-logo-exploration-v3-21-1.jpg = Logomark Design Iterations
+slate-logo-exploration-v3-27-1.jpg = More Logomark Design Iterations
+slate-logo-exploration-v3-31-1.jpg = End sample from the Shapr3D logo version
+slate-logo-exploration-v3-33-1.jpg = Logotype Option
+usage-sample-1.png = Another Logotype Option

@@ -1,0 +1,9 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+screenshot-2026-08-05-at-11-29-42-pm.jpg = Front and back cover for the physical CD
+screenshot-2026-08-09-at-1-58-13-am.jpg = Silver Lining album work available on all major platforms, including Spotify as shown here.

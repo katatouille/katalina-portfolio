@@ -1,0 +1,26 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+san-01.jpg = SANWEAR-GT
+san-02.jpg = SANWEAR-GT guiding graphics
+san-03.png = SANWEAR-GT packaging
+san-04.jpg = SANWEAR Test Type 01 packaging and Quick Start Guide
+san-05.jpg = SANWEAR Quick Start Guide
+san-06.jpg = SANWEAR × Supra colorway proposal
+san-07.png = SANWEAR-GT hat: outside graphics
+sanctuary-newsletter.jpg = SANCTUARY newsletter sample: content & design for the SAN Sound subscriber list
+sanwear-iem-social-media-graphic.png = SANWEAR IEM social media graphic
+san-11.jpeg = Final product: SANWEAR-GT on top of SANWEAR TT-01 boxes
+sanwear-special-edition.jpg = SANWEAR Special Editions
+san-14.jpg = SANWEAR Faction colorways
+san-hat-label.png = SANWEAR-GT hat: inner label
+san-social-media-2.mp4 = Pairing + IEM Controls Video
+san-tt-00.jpg = SANWEAR Test Type 00
+sanwear-gt-presale-is-now-live-1.jpg = SANCTUARY newsletter sample: content & design for the SAN Sound subscriber list
+sanwear-gt.jpg = SANWEAR GT
+sanwear-tt-01.jpg = SANWEAR Test Type 01
+social-media-vide.mp4 = Restarting + Maintaining SANWEAR

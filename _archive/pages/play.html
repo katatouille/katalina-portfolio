@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Play — Katalina.Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://use.typekit.net/hta7pck.css" />
+<link rel="stylesheet" href="css/style.css" />
+<script type="module" src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"></script>
+</head>
+<body>
+
+<div class="sticky-top">
+  <header class="bar">
+    <a href="index.html" class="brand">Katalina<span class="suffix">.Design</span></a>
+    <nav class="nav">
+      <a href="work.html">Work</a>
+      <a href="play.html" class="active">Play</a>
+      <a href="info.html">Info</a>
+    </nav>
+  </header>
+</div>
+
+<main class="work-main">
+  <div class="work-row">
+    <!-- cover image suggestion: notion_banner.png (masquerade ball) -->
+    <a href="play/masquerade-ball.html" class="work-item" data-title="Masquerade Ball">
+      <div class="work-item__img c5"><div class="fill"></div></div>
+      <div class="work-item__caption">Masquerade Ball</div>
+      <div class="work-item__year">2026 · branding, event planning, pitch design</div>
+    </a>
+    <!-- cover image suggestion: BYTHEBITE_LOGO_WHITEBACKGROUND.png or IMG_7703.jpg -->
+    <a href="play/by-the-bite.html" class="work-item" data-title="By the Bite">
+      <div class="work-item__img c3"><div class="fill"></div></div>
+      <div class="work-item__caption">By the Bite</div>
+      <div class="work-item__year">2025 · logo, branding, product labels</div>
+    </a>
+    <!-- cover image suggestion: Silver Lining front cover -->
+    <a href="play/silver-lining.html" class="work-item" data-title="Silver Lining">
+      <div class="work-item__img c2"><div class="fill"></div></div>
+      <div class="work-item__caption">Silver Lining by Marcus I</div>
+      <div class="work-item__year">2023 · album cover art</div>
+    </a>
+    <!-- teaser: from the play database — "a [redacted] is in utero." -->
+    <div class="work-item work-item--soon">
+      <div class="work-item__img">
+        <div class="soon-label">[redacted]<br />a [redacted] is in utero<br />2027</div>
+      </div>
+      <div class="work-item__caption">[redacted]</div>
+      <div class="work-item__year">coming 2027</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-hint__label">Scroll down to explore</div>
+    <dotlottie-player
+      src="https://lottie.host/ed733841-f241-4c1f-b761-e9cee822e14e/1a73uq6IGT.lottie"
+      background="transparent"
+      speed="1"
+      style="width: 48px; height: 48px"
+      loop
+      autoplay>
+    </dotlottie-player>
+  </div>
+
+  <div class="swipe-hint">« Swipe to explore »</div>
+</main>
+
+<footer class="bar bar--bottom">
+  <div class="foot-note">© 2026</div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

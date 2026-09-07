@@ -1,0 +1,14 @@
+# Captions for this project's Artifacts gallery.
+#
+# One line per image:   filename = caption
+# Edit the text after the "=", save, then run:  python3 scripts/sync-images.py
+# Leave a caption empty and the image shows without one.
+# New files you add get appended here automatically.
+
+01-walnut-banana-muffins-packaging-label.jpg = Walnut banana muffins packaging label in use
+final-logo-and-the-authentic-lebanese.png = Authentic Lebanese Hummus packaging label
+first-attendance-at-the-local-farmers.jpg = First attendance at the local farmer's market: banner, product labels, product layout. Not pictured is the framed menu, which was getting printed at this time.
+04-menu-for-the-farmers-market.jpg = Menu for the farmers market
+05-final-chosen-logos.png = Final chosen logo
+06-early-directions-explored-before-landing.png = Early directions explored before landing on the final mark
+logo-original.png = Final chosen logos
