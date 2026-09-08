@@ -150,3 +150,20 @@
     if (e.key === "Escape" && box.classList.contains("is-open")) close();
   });
 })();
+
+/* ---------- 4. light / dark toggle ------------------------------------ */
+
+(function () {
+  var toggle = document.querySelector(".theme-toggle");
+  if (!toggle) return;
+
+  toggle.addEventListener("click", function () {
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme");
+    var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var effectiveDark = current ? current === "dark" : systemDark;
+    var next = effectiveDark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+})();

@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem("theme");
+    if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+})();
+</script>
 <title>Katalina Vasquez · multidisciplinary designer</title>
 <meta name="description" content="Katalina Vasquez is a multidisciplinary designer based in Los Angeles. Brand, product, and industrial design work, plus side projects." />
 <meta property="og:title" content="Katalina Vasquez · multidisciplinary designer" />
@@ -30,6 +38,10 @@
     <li><a href="#contact">contact</a></li>
     <li><a href="Katalina_Vasquez_Resume_2026.pdf" target="_blank" rel="noopener">resume</a></li>
   </ul>
+  <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
+  </button>
 </nav>
 
 <main class="col">
@@ -42,7 +54,7 @@
     </p>
 
     <img class="island" src="assets/welcome/island.svg"
-         width="284" height="143" alt="A small island drawn in dots" />
+         width="284" height="187" alt="A small island drawn in dots" />
 
     <p class="hello-sub">
       A multidisciplinary designer based in Los Angeles, CA, USA.<br />
