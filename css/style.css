@@ -1,38 +1,32 @@
 /* ==========================================================================
    Katalina Vasquez — portfolio
-   Neue Haas Display · fixed left nav · media-forward project pages
+   JetBrains Mono · fixed left nav · media-forward project pages
    ========================================================================== */
 
 /* --- typeface ------------------------------------------------------------ */
 
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-Light.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono/jetbrains-mono-latin-300-normal.woff2") format("woff2"),
+       url("../fonts/jetbrains-mono/jetbrains-mono-latin-300-normal.woff") format("woff");
   font-weight: 300; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-LightItalic.woff2") format("woff2");
-  font-weight: 300; font-style: italic; font-display: swap;
-}
-@font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-Roman.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff2") format("woff2"),
+       url("../fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff") format("woff");
   font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-RomanItalic.woff2") format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap;
-}
-@font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-Medium.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono/jetbrains-mono-latin-500-normal.woff2") format("woff2"),
+       url("../fonts/jetbrains-mono/jetbrains-mono-latin-500-normal.woff") format("woff");
   font-weight: 500; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Neue Haas Display";
-  src: url("../fonts/NeueHaasDisplay-Bold.woff2") format("woff2");
+  font-family: "JetBrains Mono";
+  src: url("../fonts/jetbrains-mono/jetbrains-mono-latin-700-normal.woff2") format("woff2"),
+       url("../fonts/jetbrains-mono/jetbrains-mono-latin-700-normal.woff") format("woff");
   font-weight: 700; font-style: normal; font-display: swap;
 }
 
@@ -57,8 +51,8 @@
   --nav-w:      9rem;    /* left rail */
   --gap:        3rem;
 
-  --font: "Neue Haas Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -101,7 +95,7 @@ body {
   font-weight: 400;              /* Roman 55 for body — Light 45 is used for display */
   line-height: 1.62;
   letter-spacing: 0.004em;
-  word-spacing: 0.06em;   /* Display cut has a tight space glyph at text sizes */
+  word-spacing: 0.06em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
