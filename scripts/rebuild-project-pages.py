@@ -205,7 +205,7 @@ for section, slug, title, next_href, next_name in PAGES:
 {body}
   <footer class="site-foot">
     <div><a href="../index.html">&copy; 2026 Katalina Vasquez</a></div>
-    <div><a href="mailto:hello.katalinakv@gmail.com">hello.katalinakv@gmail.com</a></div>
+    <div><a href="mailto:hello.katalinav@gmail.com">hello.katalinav@gmail.com</a></div>
   </footer>
 
 </main>
