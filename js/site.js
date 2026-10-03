@@ -167,3 +167,40 @@
     try { localStorage.setItem("theme", next); } catch (e) {}
   });
 })();
+
+
+/* ---------- 5. card to case study transition ---------------------------
+   Names the clicked card's image so the browser can morph it into the
+   case study hero (and back). Only on browsers with cross-document view
+   transitions; everywhere else this does nothing and links just navigate. */
+
+(function () {
+  if (!("onpageswap" in window)) return;
+
+  function slugOf(url) {
+    var m = /\/(?:work|play)\/([^\/.]+)\.html/.exec(url || "");
+    return m ? m[1] : null;
+  }
+  function mediaFor(slug) {
+    return slug ? document.querySelector('.card[data-slug="' + slug + '"] .card-media') : null;
+  }
+  function name(el, slug, vt) {
+    if (!el || !vt) return;
+    el.style.viewTransitionName = "hero-" + slug;
+    vt.finished.finally(function () { el.style.viewTransitionName = ""; });
+  }
+
+  // leaving the home page: name the card being opened
+  window.addEventListener("pageswap", function (e) {
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    var slug = slugOf(e.activation.entry.url);
+    name(mediaFor(slug), slug, e.viewTransition);
+  });
+
+  // arriving on the home page from a case study: name the card it came from
+  window.addEventListener("pagereveal", function (e) {
+    if (!e.viewTransition || !window.navigation || !navigation.activation || !navigation.activation.from) return;
+    var slug = slugOf(navigation.activation.from.url);
+    name(mediaFor(slug), slug, e.viewTransition);
+  });
+})();

@@ -711,3 +711,291 @@ p { margin: 0 0 1.1rem; }
   .sidenav, .lightbox { display: none; }
   .col { max-width: none; }
 }
+
+
+/* ==========================================================================
+   work: case study cards
+   Whole card is the link. The CTA row is always visible (no hover needed),
+   and the card lifts, the image zooms and the arrow fills on hover.
+   ========================================================================== */
+
+.work-hint {
+  color: var(--muted);
+  font-size: .92rem;
+  margin: -.3rem 0 1.35rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+/* give the grid a little more room than the reading column, never into the rail */
+@media (min-width: 62rem) {
+  .cards { margin-inline: -2rem; }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  color: var(--text);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1),
+              border-color .2s ease, box-shadow .35s ease;
+}
+.card:hover {
+  text-decoration: none;
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 18px 36px -22px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.card:focus-visible { outline-offset: 4px; border-radius: 14px; }
+
+.card-media {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--line);
+  border-radius: 13px 13px 0 0;
+}
+.card-media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+.card:hover .card-media img { transform: scale(1.045); }
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.1rem 1.25rem 1.05rem;
+}
+.card-meta {
+  font-size: .76rem;
+  letter-spacing: .02em;
+  color: var(--faint);
+}
+.card-title {
+  margin: .3rem 0 .4rem;
+  font-size: 1.4rem;
+  font-weight: var(--w-display);
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+.card-desc {
+  color: var(--muted);
+  font-size: .9rem;
+  line-height: 1.55;
+}
+.card-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: .95rem;
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--accent);
+}
+.card-body .card-desc { margin-bottom: 1rem; }
+.card-cta { border-top: 1px solid var(--line); }
+.card-arrow {
+  display: grid;
+  place-items: center;
+  width: 2.1rem; height: 2.1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-radius: 50%;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.card-arrow svg {
+  width: 16px; height: 16px;
+  transition: transform .25s cubic-bezier(.2, .7, .2, 1);
+}
+.card:hover .card-arrow,
+.card:focus-visible .card-arrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.card:hover .card-arrow svg,
+.card:focus-visible .card-arrow svg { transform: translate(2px, -2px); }
+
+@media (max-width: 40rem) {
+  .cards { grid-template-columns: 1fr; margin-inline: 0; }
+}
+
+/* ==========================================================================
+   page transitions: the card image grows into the case study hero
+   (cross-document view transitions; browsers without support just navigate)
+   ========================================================================== */
+
+@view-transition { navigation: auto; }
+
+::view-transition-old(root),
+::view-transition-new(root) { animation-duration: .3s; }
+
+.card-media,
+.shot.hero img,
+.shot.hero video { view-transition-class: hero; }
+
+/* the case study hero carries the shared name; the card gets it from site.js
+   only for the card you actually clicked */
+.shot.hero[data-hero="gabriel-locke"] :is(img, video) { view-transition-name: hero-gabriel-locke; }
+.shot.hero[data-hero="slate"]         :is(img, video) { view-transition-name: hero-slate; }
+.shot.hero[data-hero="main-thing"]    :is(img, video) { view-transition-name: hero-main-thing; }
+.shot.hero[data-hero="san-sound"]     :is(img, video) { view-transition-name: hero-san-sound; }
+
+::view-transition-group(*.hero) {
+  animation-duration: .6s;
+  animation-timing-function: cubic-bezier(.2, .7, .2, 1);
+  overflow: clip;
+  border-radius: 8px;
+}
+::view-transition-old(*.hero),
+::view-transition-new(*.hero) {
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  .card, .card-media img, .card-arrow, .card-arrow svg { transition: none; }
+  .card:hover { transform: none; }
+  .card:hover .card-media img { transform: none; }
+}
+
+
+/* --- play cards: variants ------------------------------------------------ */
+
+/* a wide banner letterboxed on its own black, so the title isn't cropped */
+.card--contain .card-media { background: #000; }
+.card--contain .card-media img { object-fit: contain; object-position: center; }
+
+/* the unreleased one: not a link, so no lift, no arrow, redaction bars */
+.card--soon { background: transparent; border-style: dashed; }
+.card--soon:hover {
+  transform: none;
+  border-color: var(--line);
+  box-shadow: none;
+}
+.card--soon .card-media {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: .8rem;
+  padding: 0 14%;
+  background: var(--bg-soft);
+}
+.redact {
+  display: block;
+  height: .85rem;
+  border-radius: 2px;
+  background: var(--text);
+  opacity: .88;
+}
+.redact:nth-child(1) { width: 62%; }
+.redact:nth-child(2) { width: 100%; }
+.redact:nth-child(3) { width: 38%; }
+.card--soon .card-title,
+.card--soon .card-desc { color: var(--muted); }
+.card--soon .card-cta {
+  color: var(--faint);
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
+.shot.hero[data-hero="masquerade-ball"] :is(img, video) { view-transition-name: hero-masquerade-ball; }
+.shot.hero[data-hero="by-the-bite"]     :is(img, video) { view-transition-name: hero-by-the-bite; }
+.shot.hero[data-hero="silver-lining"]   :is(img, video) { view-transition-name: hero-silver-lining; }
+
+
+/* --- about ---------------------------------------------------------------- */
+
+.about .island { margin-bottom: 1.6rem; }
+.about p { font-size: 1.05rem; line-height: 1.7; }
+.about .status { margin: 1.4rem 0 1.1rem; display: flex; color: var(--text); }
+.about-contact { margin: 0; }
+
+/* --- left rail: download resume + linkedin -------------------------------- */
+
+.sidenav .nav-download svg {
+  width: .8em; height: .8em;
+  vertical-align: -.05em;
+  margin-left: .1rem;
+  transition: transform .2s ease;
+}
+.sidenav .nav-download:hover svg { transform: translate(2px, -2px); }
+
+.rail-tools {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  margin-top: 1.1rem;
+}
+.rail-tools .theme-toggle { margin-top: 0; }
+.sidenav .rail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  transition: color .15s ease, border-color .15s ease;
+}
+.sidenav .rail-icon:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.sidenav .rail-icon svg { width: 16px; height: 16px; display: block; }
+
+@media (max-width: 62rem) {
+  .rail-tools { margin-top: 0; flex: none; }
+}
+.about .status { align-items: flex-start; }
+.about .status::before { margin-top: .62em; }
+
+/* about: a thin display headline, then tighter, slightly smaller body */
+.about p { font-size: .97rem; line-height: 1.5; margin-bottom: .8rem; }
+.about .about-lead {
+  font-size: 1.7rem;
+  font-weight: var(--w-display);
+  letter-spacing: -0.018em;
+  line-height: 1.22;
+  margin-bottom: 1rem;
+  text-wrap: balance;
+}
+.about .status { font-size: .93rem; margin: 1.1rem 0 .8rem; }
+@media (max-width: 34rem) { .about .about-lead { font-size: 1.4rem; } }
+
+/* san sound: the product sits mid-frame, so crop from the center, not the top */
+.card[data-slug="san-sound"] .card-media img,
+.shot.hero[data-hero="san-sound"] img { object-position: center 50%; }
+::view-transition-old(hero-san-sound),
+::view-transition-new(hero-san-sound) { object-position: center 50%; }
+
+/* a hero that is a pdf cover already says "view full pdf"; drop the image hint */
+.shot.hero.pdf::after { content: none; }
+
+/* Safari paints text-selection highlights out to the edge of the nearest
+   "selection root", which was the whole window. A transform makes each block
+   its own root, so a highlight stops at the edge of its own section/text block. */
+.col > section,
+.col .project-head,
+.col .lede,
+.col .meta,
+.col .prose { transform: translateZ(0); }
+
+/* and the fixed rail is chrome, not copy: keep it out of selections */
+.sidenav { -webkit-user-select: none; user-select: none; }
+
+/* what I do: two columns, reading down the first then the second */
+.rows--cols { display: block; column-count: 2; column-gap: 2rem; }
+.rows--cols > div { break-inside: avoid; margin-bottom: .6rem; }
+@media (max-width: 34rem) { .rows--cols { column-count: 1; } }

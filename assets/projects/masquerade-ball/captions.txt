@@ -5,5 +5,5 @@
 # Leave a caption empty and the image shows without one.
 # New files you add get appended here automatically.
 
+00-masquerade-pitch-deck.jpg = Masquerade Ball: Club Nothing Funding Proposal
 masquerade-banner.png = Masquerade Ball banner
-masquerade-pitch-deck.jpg = Masquerade Ball: Club Nothing Funding Proposal
