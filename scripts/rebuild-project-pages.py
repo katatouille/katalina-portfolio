@@ -185,7 +185,7 @@ for section, slug, title, next_href, next_name in PAGES:
 <meta name="description" content="{desc}" />
 <link rel="preload" href="../fonts/NeueHaasDisplay-Light.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../fonts/NeueHaasDisplay-Roman.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="../css/style.css" />
+<link rel="stylesheet" href="../css/style.css?v=20261003" />
 </head>
 <body>
 
@@ -210,7 +210,7 @@ for section, slug, title, next_href, next_name in PAGES:
 
 </main>
 
-<script src="../js/site.js"></script>
+<script src="../js/site.js?v=20261003"></script>
 </body>
 </html>
 """.format(title=title, desc=strip_tags(lede)[:165], section=section,
