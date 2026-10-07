@@ -999,3 +999,25 @@ p { margin: 0 0 1.1rem; }
 .rows--cols { display: block; column-count: 2; column-gap: 2rem; }
 .rows--cols > div { break-inside: avoid; margin-bottom: .6rem; }
 @media (max-width: 34rem) { .rows--cols { column-count: 1; } }
+
+/* about: intro copy with a small square photo beside it */
+.about-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 9rem;
+  gap: 1.5rem;
+  align-items: start;
+}
+.about-photo { margin: 0; width: 9rem; height: 9rem; }
+.about-photo img {
+  display: block;
+  width: 9rem;
+  height: 9rem;
+  object-fit: cover;
+  object-position: 42% 50%;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+@media (max-width: 40rem) {
+  .about-intro { grid-template-columns: 1fr; gap: 1rem; }
+  .about-photo, .about-photo img { width: 7.5rem; height: 7.5rem; }
+}
