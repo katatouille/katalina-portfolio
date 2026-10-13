@@ -206,28 +206,78 @@
 })();
 
 
-/* ---------- 6. on repeat: load spotify only when asked ------------------
-   The link works without JS (opens Spotify). With JS, pressing play swaps it
-   for Spotify's player, so nothing from Spotify loads for visitors who don't. */
+/* ---------- 6. mini player ------------------------------------------------
+   A YouTube playlist behind a slim bar. Nothing from YouTube loads until the
+   first press of play, and nothing autoplays. Set the playlist id on the
+   #miniplayer element (data-playlist); with no id the bar stays hidden.
+   Songs can be reordered or swapped on YouTube without touching this file. */
 
 (function () {
-  var card = document.querySelector(".radio[data-playlist]");
-  if (!card) return;
+  var bar = document.getElementById("miniplayer");
+  if (!bar) return;
+  var id = (bar.getAttribute("data-playlist") || "").trim();
+  if (!id) return;
 
-  card.addEventListener("click", function (e) {
-    e.preventDefault();
-    var root = document.documentElement;
-    var t = root.getAttribute("data-theme");
-    var dark = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  bar.hidden = false;
+  document.body.classList.add("has-miniplayer");
 
-    var frame = document.createElement("iframe");
-    frame.className = "radio-frame";
-    frame.title = "katalina island radio on Spotify";
-    frame.src = "https://open.spotify.com/embed/playlist/" + card.getAttribute("data-playlist") +
-      "?utm_source=generator" + (dark ? "&theme=0" : "");
-    frame.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
-    frame.setAttribute("loading", "lazy");
-    card.replaceWith(frame);
-    frame.focus();
+  var playBtn = bar.querySelector(".mp-play");
+  var nextBtn = bar.querySelector(".mp-next");
+  var titleEl = bar.querySelector(".mp-title");
+  var player = null, loading = false, wantPlay = false;
+
+  function setPlaying(on) {
+    bar.classList.toggle("is-playing", on);
+    playBtn.setAttribute("aria-label", on ? "Pause katalina island radio" : "Play katalina island radio");
+  }
+  function setTitle() {
+    try {
+      var d = player.getVideoData();
+      if (d && d.title) titleEl.textContent = d.title;
+    } catch (e) {}
+  }
+
+  function build() {
+    player = new YT.Player("mp-yt", {
+      width: "96", height: "54",
+      playerVars: {
+        listType: "playlist", list: id,
+        playsinline: 1, controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: function () {
+          bar.classList.add("is-ready");
+          if (wantPlay) player.playVideo();
+        },
+        onStateChange: function (e) {
+          setPlaying(e.data === 1 || e.data === 3);
+          if (e.data === 1 || e.data === 5) setTitle();
+        },
+        onError: function () {          // a song that can't be embedded: move on
+          try { player.nextVideo(); } catch (err) {}
+        }
+      }
+    });
+  }
+
+  function load() {
+    if (loading) return;
+    loading = true;
+    titleEl.textContent = "Loading…";
+    window.onYouTubeIframeAPIReady = build;
+    var tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+  }
+
+  playBtn.addEventListener("click", function () {
+    if (!player) { wantPlay = true; load(); return; }
+    if (!player.getPlayerState) return;
+    if (player.getPlayerState() === 1) player.pauseVideo(); else player.playVideo();
+  });
+  nextBtn.addEventListener("click", function () {
+    if (!player) { wantPlay = true; load(); return; }
+    player.nextVideo();
   });
 })();

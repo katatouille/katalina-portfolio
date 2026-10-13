@@ -29,7 +29,7 @@
 <link rel="shortcut icon" href="favicon/favicon.ico" />
 <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png" />
 <link rel="manifest" href="favicon/site.webmanifest" />
-<link rel="stylesheet" href="css/style.css?v=20261019" />
+<link rel="stylesheet" href="css/style.css?v=20261021" />
   <script data-goatcounter="https://helloisland.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
@@ -72,19 +72,7 @@
 
     <p class="status">Open to part-time roles and freelance projects.</p>
 
-    <p class="about-contact">Want to work together? Email me at <a href="mailto:hello.katalinav@gmail.com">hello.katalinav@gmail.com</a> and we can set up a call to see if we&rsquo;re a good match.</p>
-  </section>
-
-  <section id="onrepeat" class="onrepeat">
-    <h2 class="label">On Repeat</h2>
-    <a class="radio" href="https://open.spotify.com/playlist/7oHLjmLU2Jfz7i9t3ib5oE" target="_blank" rel="noopener" data-playlist="7oHLjmLU2Jfz7i9t3ib5oE">
-      <span class="radio-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a.9.9 0 0 0 1.37.77l10.4-6.5a.9.9 0 0 0 0-1.54L9.37 4.73A.9.9 0 0 0 8 5.5z"/></svg></span>
-      <span class="radio-text">
-        <span class="radio-title">katalina island radio</span>
-        <span class="radio-sub">A few songs to get to know me. Press play to open the player.</span>
-      </span>
-      <span class="radio-src" aria-hidden="true">Spotify</span>
-    </a>
+    <p class="about-contact callout"><strong>Want to work together?</strong> Email me at <a href="mailto:hello.katalinav@gmail.com">hello.katalinav@gmail.com</a> and we can set up a call to see if we&rsquo;re a good match.</p>
   </section>
 
   <section id="work">
@@ -307,6 +295,23 @@
 
 </main>
 
-<script src="js/site.js?v=20261003"></script>
+<div class="miniplayer" id="miniplayer" data-playlist="PLOUmT-cYwqac" hidden>
+  <div class="mp-video" id="mp-video" aria-hidden="true"><div id="mp-yt"></div></div>
+  <button class="mp-btn mp-play" type="button" aria-label="Play katalina island radio">
+    <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a.9.9 0 0 0 1.37.77l10.4-6.5a.9.9 0 0 0 0-1.54L9.37 4.73A.9.9 0 0 0 8 5.5z"/></svg>
+    <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
+  </button>
+  <div class="mp-info">
+    <span class="mp-kicker">katalina island radio</span>
+    <span class="mp-title" aria-live="polite">Some songs I have on repeat</span>
+  </div>
+  <button class="mp-btn mp-next" type="button" aria-label="Next song">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5.6v12.8a.8.8 0 0 0 1.25.66l8.7-6.4a.8.8 0 0 0 0-1.32l-8.7-6.4A.8.8 0 0 0 6 5.6z"/><rect x="16.5" y="5" width="2.2" height="14" rx="1"/></svg>
+  </button>
+</div>
+
+<script src="js/site.js?v=20261021"></script>
+
+
 </body>
 </html>
