@@ -1019,7 +1019,9 @@ p { margin: 0 0 1.1rem; }
 }
 @media (max-width: 40rem) {
   .about-intro { grid-template-columns: 1fr; gap: 1rem; }
-  .about-photo, .about-photo img { width: 7.5rem; height: 7.5rem; }
+  /* phones: a landscape photo as wide as the text above and below it */
+  .about-photo { width: 100%; height: auto; }
+  .about-photo img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-position: 42% 62%; }
 }
 
 /* What I Do: grouped */
