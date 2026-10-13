@@ -1021,3 +1021,35 @@ p { margin: 0 0 1.1rem; }
   .about-intro { grid-template-columns: 1fr; gap: 1rem; }
   .about-photo, .about-photo img { width: 7.5rem; height: 7.5rem; }
 }
+
+/* What I Do: grouped */
+.groups { display: grid; grid-template-columns: 1fr 1fr; gap: 1.9rem 2rem; }
+.group-label {
+  margin: 0 0 .7rem;
+  font-size: .76rem; font-weight: 500;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--faint);
+}
+@media (max-width: 34rem) { .groups { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+/* phone widths: keep all five nav items plus the two icons on one line */
+@media (max-width: 62rem) {
+  .sidenav ul { flex: 1 1 auto; min-width: 0; }
+}
+@media (max-width: 34rem) {
+  .sidenav { padding: .7rem .9rem; gap: .5rem; }
+  .sidenav ul { gap: .85rem; }
+  .sidenav a { font-size: .9rem; }
+  .rail-tools { gap: .35rem; }
+  .sidenav .rail-icon { padding: .35rem; }
+}
+@media (max-width: 24rem) {
+  .sidenav ul { gap: .65rem; }
+  .sidenav a { font-size: .85rem; }
+}
+@media (max-width: 21rem) {
+  .sidenav { padding: .6rem .7rem; }
+  .sidenav ul { gap: .5rem; }
+  .sidenav a { font-size: .8rem; }
+  .sidenav .rail-icon svg { width: 14px; height: 14px; }
+}
