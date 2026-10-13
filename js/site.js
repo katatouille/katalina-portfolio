@@ -224,7 +224,8 @@
   var playBtn = bar.querySelector(".mp-play");
   var nextBtn = bar.querySelector(".mp-next");
   var titleEl = bar.querySelector(".mp-title");
-  var player = null, loading = false, wantPlay = false;
+  var player = null, loading = false, wantPlay = false, stallTimer = null;
+  var playlistUrl = "https://www.youtube.com/playlist?list=" + encodeURIComponent(id);
 
   function setPlaying(on) {
     bar.classList.toggle("is-playing", on);
@@ -237,22 +238,43 @@
     } catch (e) {}
   }
 
+  // if nothing starts within a few seconds (blocked embed, ad blocker, slow
+  // connection), say so and offer the playlist on YouTube instead of hanging
+  function watchForStall() {
+    clearTimeout(stallTimer);
+    stallTimer = setTimeout(function () {
+      var state = -1;
+      try { state = player.getPlayerState(); } catch (e) {}
+      if (state === 1) return;
+      titleEl.textContent = "";
+      var a = document.createElement("a");
+      a.href = playlistUrl; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = "Trouble playing? Open on YouTube";
+      titleEl.appendChild(a);
+      setPlaying(false);
+    }, 9000);
+  }
+
   function build() {
     player = new YT.Player("mp-yt", {
       width: "96", height: "54",
       playerVars: {
         listType: "playlist", list: id,
+        autoplay: wantPlay ? 1 : 0,
         playsinline: 1, controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3,
         origin: window.location.origin
       },
       events: {
         onReady: function () {
           bar.classList.add("is-ready");
-          if (wantPlay) player.playVideo();
+          setTitle();
+          if (wantPlay) { player.playVideo(); watchForStall(); }
         },
         onStateChange: function (e) {
           setPlaying(e.data === 1 || e.data === 3);
-          if (e.data === 1 || e.data === 5) setTitle();
+          setTitle();
+          if (e.data === 1) clearTimeout(stallTimer);
+          else if (e.data === 3) watchForStall();
         },
         onError: function () {          // a song that can't be embedded: move on
           try { player.nextVideo(); } catch (err) {}
@@ -274,7 +296,8 @@
   playBtn.addEventListener("click", function () {
     if (!player) { wantPlay = true; load(); return; }
     if (!player.getPlayerState) return;
-    if (player.getPlayerState() === 1) player.pauseVideo(); else player.playVideo();
+    if (player.getPlayerState() === 1) player.pauseVideo();
+    else { player.playVideo(); watchForStall(); }
   });
   nextBtn.addEventListener("click", function () {
     if (!player) { wantPlay = true; load(); return; }

@@ -1121,3 +1121,4 @@ body.has-miniplayer .col { padding-bottom: 6.5rem; }
   line-height: 1.55;
 }
 .about-contact.callout strong { font-weight: 500; }
+.mp-title a { color: var(--accent); }
