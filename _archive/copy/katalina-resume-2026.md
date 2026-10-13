@@ -1,7 +1,7 @@
 # Katalina Vasquez
 
 **Product & Brand Designer**
-Los Angeles, CA · hello.katalinakv@gmail.com · [portfolio] · [linkedin.com/in/katatouille](https://www.linkedin.com/in/katatouille/)
+Los Angeles, CA · hello.katalinav@gmail.com · [portfolio] · [linkedin.com/in/katalinav1](https://www.linkedin.com/in/katalinav1/)
 
 ---
 
