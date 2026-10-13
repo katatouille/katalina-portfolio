@@ -204,3 +204,30 @@
     name(mediaFor(slug), slug, e.viewTransition);
   });
 })();
+
+
+/* ---------- 6. on repeat: load spotify only when asked ------------------
+   The link works without JS (opens Spotify). With JS, pressing play swaps it
+   for Spotify's player, so nothing from Spotify loads for visitors who don't. */
+
+(function () {
+  var card = document.querySelector(".radio[data-playlist]");
+  if (!card) return;
+
+  card.addEventListener("click", function (e) {
+    e.preventDefault();
+    var root = document.documentElement;
+    var t = root.getAttribute("data-theme");
+    var dark = t ? t === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    var frame = document.createElement("iframe");
+    frame.className = "radio-frame";
+    frame.title = "katalina island radio on Spotify";
+    frame.src = "https://open.spotify.com/embed/playlist/" + card.getAttribute("data-playlist") +
+      "?utm_source=generator" + (dark ? "&theme=0" : "");
+    frame.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    frame.setAttribute("loading", "lazy");
+    card.replaceWith(frame);
+    frame.focus();
+  });
+})();

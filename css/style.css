@@ -1053,3 +1053,46 @@ p { margin: 0 0 1.1rem; }
   .sidenav a { font-size: .8rem; }
   .sidenav .rail-icon svg { width: 14px; height: 14px; }
 }
+
+/* ---------- on repeat: spotify playlist, loaded on click ---------------- */
+
+.radio {
+  display: flex; align-items: center; gap: 1rem;
+  width: 100%;
+  padding: 1rem 1.15rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg-soft);
+  color: var(--text);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.radio:hover { text-decoration: none; border-color: var(--accent); }
+.radio:hover .radio-play { background: var(--accent); color: var(--bg); }
+.radio-play {
+  flex: none;
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent);
+  transition: background .2s ease, color .2s ease;
+}
+.radio-play svg { width: 18px; height: 18px; margin-left: 2px; }
+.radio-text { display: flex; flex-direction: column; min-width: 0; }
+.radio-title { font-size: 1.05rem; font-weight: 450; }
+.radio-sub { font-size: .88rem; color: var(--muted); }
+.radio-src {
+  margin-left: auto; flex: none;
+  font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--faint);
+}
+.radio-frame {
+  display: block; width: 100%; height: 352px;
+  border: 0; border-radius: 14px;
+  color-scheme: normal;
+}
+@media (max-width: 34rem) {
+  .radio { padding: .9rem; gap: .8rem; }
+  .radio-src { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .radio, .radio-play { transition: none; } }
