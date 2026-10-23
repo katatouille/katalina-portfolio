@@ -1,16 +1,16 @@
 /* ==========================================================================
    Katalina, portfolio
-   Norican + Newsreader · fixed left nav · media-forward project pages
+   Satisfy + Newsreader · fixed left nav · media-forward project pages
    ========================================================================== */
 
 /* --- typeface ------------------------------------------------------------ */
 
 
-/* script: the name only. Norican is the closest free match to the hand-lettered
+/* script: the name only. Satisfy is the closest free match to the hand-lettered
    wordmark in the mockup; swap the file and --script to try another. */
 @font-face {
-  font-family: "Norican";
-  src: url("../fonts/norican/norican-latin-400-normal.woff2") format("woff2");
+  font-family: "Satisfy";
+  src: url("../fonts/satisfy/satisfy-latin-400-normal.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
 }
 
@@ -60,7 +60,7 @@
 
   --font:   "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
   --mono:   var(--font);   /* one text family: no separate mono any more */
-  --script: "Norican", "Snell Roundhand", "Segoe Script", cursive;
+  --script: "Satisfy", "Snell Roundhand", "Segoe Script", cursive;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -1155,7 +1155,7 @@ body.has-miniplayer .col { padding-bottom: 6.5rem; }
 
 /* ==========================================================================
    editorial pass, Oct 2026
-   Two families only: Norican for the name, Newsreader for everything else.
+   Two families only: Satisfy for the name, Newsreader for everything else.
    Pink replaces purple. Image-first cards, a real timeline, a tool ticker,
    and a plain footer with the version.
    ========================================================================== */
@@ -1199,11 +1199,11 @@ h2.label.label--sub { margin-top: 3.5rem; }
 .wordmark {
   font-family: var(--script);
   font-weight: 400;
-  font-size: clamp(3.5rem, 10vw, 5rem);
+  font-size: clamp(4rem, 12vw, 6rem);
   line-height: 1;
   letter-spacing: 0;
   color: var(--pink);
-  margin: 0 0 .5rem -.04em;
+  margin: 0 0 .85rem -.04em;
 }
 
 .role {

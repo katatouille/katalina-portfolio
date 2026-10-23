@@ -389,3 +389,47 @@
     io.observe(el);
   });
 })();
+
+
+/* ---------------------------------------------------------------
+   10. Smooth scroll for the left nav
+   CSS smooth scrolling switches itself off for anyone whose computer is set
+   to "reduce motion", which made the nav jump. A click on the nav is one
+   short, deliberate move, so it glides either way. Everything else on the
+   page still respects reduced motion.
+   --------------------------------------------------------------- */
+(function () {
+  var links = document.querySelectorAll('.sidenav a[href^="#"], .rail-sections a[href^="#"]');
+  if (!links.length) return;
+
+  function ease(t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
+  links.forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var id = a.getAttribute("href").slice(1);
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+
+      var offset = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+      var start = window.pageYOffset;
+      var end = Math.max(0, target.getBoundingClientRect().top + start - offset);
+      var dist = end - start;
+      var dur = Math.min(900, Math.max(450, Math.abs(dist) * 0.35));
+      var t0 = null;
+
+      document.documentElement.style.scrollBehavior = "auto";
+      function step(ts) {
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        window.scrollTo(0, start + dist * ease(p));
+        if (p < 1) requestAnimationFrame(step);
+        else {
+          document.documentElement.style.scrollBehavior = "";
+          if (history.replaceState) history.replaceState(null, "", "#" + id);
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  });
+})();
