@@ -14,7 +14,7 @@
    Astronomy    low-precision solar and lunar ephemerides, so the sun
                 arc, the moon's position, and its phase are all real
 
-   Katalina Vasquez, 2026
+   Katalina, 2026
    ===================================================================== */
 
 (function () {

@@ -181,7 +181,7 @@ for section, slug, title, next_href, next_name in PAGES:
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>{title} &mdash; Katalina Vasquez</title>
+<title>{title} &middot; Katalina</title>
 <meta name="description" content="{desc}" />
 <link rel="preload" href="../fonts/NeueHaasDisplay-Light.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="../fonts/NeueHaasDisplay-Roman.woff2" as="font" type="font/woff2" crossorigin />
@@ -204,7 +204,7 @@ for section, slug, title, next_href, next_name in PAGES:
 
 {body}
   <footer class="site-foot">
-    <div><a href="../index.html">&copy; 2026 Katalina Vasquez</a></div>
+    <div><a href="../index.html">&copy; 2026 Katalina</a></div>
     <div><a href="mailto:hello.katalinav@gmail.com">hello.katalinav@gmail.com</a></div>
   </footer>
 

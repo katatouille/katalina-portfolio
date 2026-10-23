@@ -1,4 +1,4 @@
-/* katalinavasquez.com — three small things:
+/* katalinaisland.online: three small things:
    1. image slots that resolve any common extension, and name themselves when empty
    2. the left rail highlighting whichever section you're reading
    3. click an image to see it big
@@ -63,7 +63,9 @@
 
       var spy = function () {
         var line = window.scrollY + window.innerHeight * 0.28;
-        var pick = targets[0];
+        // on the homepage nothing is highlighted until you reach a section;
+        // case study pages start on their first anchor
+        var pick = document.body.hasAttribute("data-home") ? null : targets[0];
 
         for (var i = 0; i < targets.length; i++) {
           if (targets[i].el.getBoundingClientRect().top + window.scrollY <= line) {
@@ -77,10 +79,14 @@
         }
 
         if (pick !== current) {
-          if (current) current.link.classList.remove("is-active");
-          pick.link.classList.add("is-active");
-          pick.link.setAttribute("aria-current", "true");
-          if (current) current.link.removeAttribute("aria-current");
+          if (current) {
+            current.link.classList.remove("is-active");
+            current.link.removeAttribute("aria-current");
+          }
+          if (pick) {
+            pick.link.classList.add("is-active");
+            pick.link.setAttribute("aria-current", "true");
+          }
           current = pick;
         }
       };
@@ -302,5 +308,84 @@
   nextBtn.addEventListener("click", function () {
     if (!player) { wantPlay = true; load(); return; }
     player.nextVideo();
+  });
+})();
+
+
+/* ---------- 7. braille status glyph ------------------------------------------
+   The same dots the old island was drawn with, turning like a tiny spinner next
+   to "open to new projects". Holds still for people who ask for less motion. */
+
+(function () {
+  var el = document.querySelector(".braille");
+  if (!el) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var frames = ["\u28FE", "\u28FD", "\u28FB", "\u28BF", "\u287F", "\u28DF", "\u28EF", "\u28F7"];
+  var i = 0;
+  setInterval(function () {
+    if (document.hidden) return;
+    i = (i + 1) % frames.length;
+    el.textContent = frames[i];
+  }, 130);
+})();
+
+
+/* ---------- 8. copy email ----------------------------------------------------
+   Same behaviour as the row it was modelled on: click, the address is copied,
+   the label reads "Copied Email" with a green check for a couple of seconds. */
+
+(function () {
+  var btn = document.querySelector(".copy-email");
+  if (!btn) return;
+  var email = btn.getAttribute("data-email");
+  var label = btn.querySelector(".ce-label");
+  var status = document.querySelector("[data-copy-status]");
+  var timer = null;
+
+  function done() {
+    btn.classList.add("is-copied");
+    label.textContent = "Copied Email";
+    if (status) status.textContent = "Email address copied";
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      btn.classList.remove("is-copied");
+      label.textContent = "Copy Email";
+      if (status) status.textContent = "";
+    }, 2000);
+  }
+
+  btn.addEventListener("click", function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(done, function () {
+        window.location.href = "mailto:" + email;
+      });
+    } else {
+      window.location.href = "mailto:" + email;
+    }
+  });
+})();
+
+
+/* ---------- 9. reveal on scroll ---------------------------------------------- */
+
+(function () {
+  var items = [].slice.call(document.querySelectorAll(".reveal"));
+  if (!items.length) return;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || !("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("is-in"); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("is-in");
+      io.unobserve(e.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+  items.forEach(function (el, n) {
+    // a small stagger between neighbours that arrive together
+    el.style.setProperty("--d", (n % 2) * 90 + "ms");
+    io.observe(el);
   });
 })();

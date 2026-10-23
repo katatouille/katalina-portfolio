@@ -1,4 +1,4 @@
-# katalinavasquez — static site
+# katalinaisland.online, static site
 
 Plain HTML and CSS. No build step, no dependencies, nothing to install.
 Open `index.html` in a browser to preview it locally.
@@ -103,3 +103,22 @@ Two things to know:
 
 Cloudflare Pages is the other good option and works from a private repo, but
 there's no strong reason to switch. GitHub Pages is a fine home for this.
+
+
+## Versioning
+
+The footer on every page shows the site version and the month and year of the last
+update (`v1.3.0 Oct 2026`). After any round of edits, run
+
+    python3 scripts/bump-version.py            # patch: small fixes
+    python3 scripts/bump-version.py minor      # visible changes
+    python3 scripts/bump-version.py major      # a redesign
+
+It updates `index.html`, `work/*.html` and `play/*.html` together, and takes the
+month and year from today's date.
+
+## Names
+
+Never put Katalina's last name anywhere on the site: page copy, titles, comments,
+structured data, or file names that are linked from a page. The Resume link downloads
+as `Katalina_Resume_2026.pdf`.

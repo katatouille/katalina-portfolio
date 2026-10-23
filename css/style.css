@@ -1,74 +1,101 @@
 /* ==========================================================================
-   Katalina Vasquez — portfolio
-   Inter · fixed left nav · media-forward project pages
+   Katalina, portfolio
+   Norican + Newsreader · fixed left nav · media-forward project pages
    ========================================================================== */
 
 /* --- typeface ------------------------------------------------------------ */
 
+
+/* script: the name only. Norican is the closest free match to the hand-lettered
+   wordmark in the mockup; swap the file and --script to try another. */
 @font-face {
-  font-family: "Inter";
-  src: url("../fonts/inter/inter-latin-wght-normal.woff2") format("woff2");
-  font-weight: 100 900; font-style: normal; font-display: swap;
+  font-family: "Norican";
+  src: url("../fonts/norican/norican-latin-400-normal.woff2") format("woff2");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* Newsreader: the one text family. Variable weight and optical size, so big
+   type gets the fine high-contrast cut and small type gets the sturdy one. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader/newsreader-latin-opsz-normal.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: "Inter";
-  src: url("../fonts/inter/inter-latin-wght-italic.woff2") format("woff2");
-  font-weight: 100 900; font-style: italic; font-display: swap;
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader/newsreader-latin-opsz-italic.woff2") format("woff2");
+  font-weight: 200 800; font-style: italic; font-display: swap;
 }
 
 
 /* --- tokens -------------------------------------------------------------- */
 
 :root {
-  --bg:         #fcfcfa;
-  --bg-soft:    #f2f2ee;
-  --text:       #1b1b1a;
-  --muted:      #6d6d68;
-  --faint:      #96968f;
-  --line:       #e3e3dc;
+  --bg:         #fbf7f0;   /* warm paper */
+  --bg-soft:    #f4ede2;
+  --text:       #1a0f0a;   /* dark brown ink, 15.8:1 on the paper */
+  --muted:      #5a483d;   /* 5.9:1 */
+  --faint:      #6c5a4e;   /* 4.7:1, labels only */
+  --line:       #e4dacb;
 
-  /* Katalina purple. #D071FF is the brand value and is used as-is on dark,
-     where it reads at 6.6:1. On the light background it only reaches 2.7:1,
-     which fails WCAG AA for text, so light mode uses a deepened member of the
-     same family at 4.7:1. Swap --accent below if you want the literal hex. */
-  --accent:     #a63ce0;
-  --accent-soft:#d071ff;
+  /* Palette: teal. Same warm paper and dark brown ink as before.
+     --pink      the bright brand teal. Large display only (the name, dots), 2.2:1 (it is a wordmark and decoration, never body text).
+     --accent    a deeper teal for links and small text, 5.2:1 on the paper
+                 and 4.8:1 on cards, so it passes WCAG AA.
+     --pink-pale soft fills and the selection highlight.
+     --pink-wash the faintest tint.
+     (The names say pink because the site started that way.)
+     Old riso pink, if wanted again: #ee1f8a / #c8086e / #ffc4e1 / #ffebf5. */
+  --pink:       #00bfae;
+  --accent:     #00756c;
+  --accent-soft:#00bfae;
+  --pink-pale:  #9af2e8;
+  --pink-wash:  #dcfbf6;
 
-  --w-display: 200;  /* thin display, like a fashion-editorial headline */
-  --w-body:    350;  /* light but still accessible at 16-17px */
-  --col:        44rem;   /* reading column */
+  --w-display: 300;  /* light serif display */
+  --w-body:    400;
+  --col:        40rem;   /* reading column */
   --nav-w:      9rem;    /* left rail */
-  --gap:        3rem;
+  --gap:        2rem;
 
-  --font: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --mono: "Inter", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font:   "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --mono:   var(--font);   /* one text family: no separate mono any more */
+  --script: "Norican", "Snell Roundhand", "Segoe Script", cursive;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:         #131312;
-    --bg-soft:    #1d1d1b;
-    --text:       #eae8e3;
-    --muted:      #9b9a93;
-    --faint:      #74736d;
-    --line:       #2f2f2c;
-    --accent:     #d071ff;
-    --accent-soft:#d071ff;
+    --bg:         #120b08;
+    --bg-soft:    #211814;
+    --text:       #f8f0e5;
+    --muted:      #b5a599;
+    --faint:      #9c8c80;
+    --line:       #3a2e27;
+    --pink:       #1ff0dc;
+    --accent:     #3df5e4;
+    --accent-soft:#1ff0dc;
+    --pink-pale:  #0b5a54;
+    --pink-wash:  #0d3a37;
   }
 }
 
 /* an explicit choice from the theme toggle overrides system preference
    in either direction */
 :root[data-theme="dark"] {
-  --bg:         #131312;
-  --bg-soft:    #1d1d1b;
-  --text:       #eae8e3;
-  --muted:      #9b9a93;
-  --faint:      #74736d;
-  --line:       #2f2f2c;
-  --accent:     #d071ff;
-  --accent-soft:#d071ff;
+  --bg:         #120b08;
+  --bg-soft:    #211814;
+  --text:       #f8f0e5;
+  --muted:      #b5a599;
+  --faint:      #9c8c80;
+  --line:       #3a2e27;
+  --pink:       #1ff0dc;
+  --accent:     #3df5e4;
+  --accent-soft:#1ff0dc;
+  --pink-pale:  #0b5a54;
+  --pink-wash:  #0d3a37;
 }
+
+::selection { background: var(--pink-pale); color: var(--text); }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -80,10 +107,10 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font);
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: var(--w-body);
-  line-height: 1.62;
-  letter-spacing: 0.004em;
+  line-height: 1.6;
+  letter-spacing: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -110,7 +137,7 @@ a.plain:hover { color: var(--accent); }
 
 .sidenav {
   position: fixed;
-  top: 7.5rem;
+  top: 11.25rem;
   left: 0;
   width: calc(50vw - var(--col) / 2 - var(--gap));
   min-width: var(--nav-w);
@@ -123,14 +150,15 @@ a.plain:hover { color: var(--accent); }
 .sidenav li { margin-bottom: .95rem; }
 
 .sidenav a {
-  color: var(--muted);
+  color: var(--text);
   font-weight: var(--w-body);
   font-size: 1.05rem;
   letter-spacing: .005em;
   text-decoration: none;
+  white-space: nowrap;
   transition: color .15s ease;
 }
-.sidenav a:hover { color: var(--text); text-decoration: none; }
+.sidenav a:hover { color: var(--accent); text-decoration: none; }
 
 .sidenav a.is-active {
   color: var(--accent);
@@ -441,7 +469,7 @@ p { margin: 0 0 1.1rem; }
 .tags li::after { content: ", "; }
 .tags li:last-child::after { content: ""; }
 
-/* the standalone technologies list under career — a wrapping row of chips,
+/* the standalone technologies list under career, a wrapping row of chips,
    distinct from the comma-separated .tags used inline in project meta */
 .tech-tags {
   list-style: none;
@@ -522,7 +550,7 @@ p { margin: 0 0 1.1rem; }
 }
 .shot video { cursor: default; }
 
-/* a portrait screenshot shouldn't be four screens tall — js tags these on load */
+/* a portrait screenshot shouldn't be four screens tall, js tags these on load */
 .shot:not(.hero) img.is-tall {
   width: auto;
   max-width: 100%;
@@ -653,8 +681,8 @@ p { margin: 0 0 1.1rem; }
    responsive
    ========================================================================== */
 
-/* not enough room beside the column — rail becomes a top bar */
-@media (max-width: 62rem) {
+/* not enough room beside the column, rail becomes a top bar */
+@media (max-width: 74rem) {
   .sidenav {
     position: sticky;
     top: 0;
@@ -692,7 +720,6 @@ p { margin: 0 0 1.1rem; }
 }
 
 @media (max-width: 34rem) {
-  body { font-size: 16px; }
   .col { padding: 2.25rem 1.15rem 3.5rem; }
   .entry { grid-template-columns: 1fr; gap: .15rem; }
   .entry .yr { padding-top: 0; }
@@ -731,7 +758,7 @@ p { margin: 0 0 1.1rem; }
   gap: 1.25rem;
 }
 /* give the grid a little more room than the reading column, never into the rail */
-@media (min-width: 62rem) {
+@media (min-width: 74rem) {
   .cards { margin-inline: -2rem; }
 }
 
@@ -955,7 +982,7 @@ p { margin: 0 0 1.1rem; }
 .sidenav .rail-icon:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
 .sidenav .rail-icon svg { width: 16px; height: 16px; display: block; }
 
-@media (max-width: 62rem) {
+@media (max-width: 74rem) {
   .rail-tools { margin-top: 0; flex: none; }
 }
 .about .status { align-items: flex-start; }
@@ -1035,7 +1062,7 @@ p { margin: 0 0 1.1rem; }
 @media (max-width: 34rem) { .groups { grid-template-columns: 1fr; gap: 1.5rem; } }
 
 /* phone widths: keep all five nav items plus the two icons on one line */
-@media (max-width: 62rem) {
+@media (max-width: 74rem) {
   .sidenav ul { flex: 1 1 auto; min-width: 0; }
 }
 @media (max-width: 34rem) {
@@ -1124,3 +1151,393 @@ body.has-miniplayer .col { padding-bottom: 6.5rem; }
 }
 .about-contact.callout strong { font-weight: 500; }
 .mp-title a { color: var(--accent); }
+
+
+/* ==========================================================================
+   editorial pass, Oct 2026
+   Two families only: Norican for the name, Newsreader for everything else.
+   Pink replaces purple. Image-first cards, a real timeline, a tool ticker,
+   and a plain footer with the version.
+   ========================================================================== */
+
+html { font-size: 106.25%; }                    /* 17px base; a serif wants a touch more than 16 */
+@media (max-width: 34rem) { html { font-size: 100%; } }
+body { overflow-x: clip; font-optical-sizing: auto; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* shared small-caps label voice: section labels, "Today", What I Do groups */
+h2.label,
+.prose h2,
+.today,
+.doing dt,
+.group-label {
+  font-family: var(--font);
+  font-size: .92rem;
+  font-weight: 500;
+  font-variant-caps: all-small-caps;
+  letter-spacing: .1em;
+  text-transform: none;
+  color: var(--muted);
+}
+h2.label { margin-bottom: 1.5rem; }
+h2.label.label--sub { margin-top: 3.5rem; }
+
+/* --- rail ------------------------------------------------------------------ */
+
+@media (min-width: 74rem) { .sidenav { top: 12.25rem; } }
+.sidenav a { font-size: 1.05rem; }
+.sidenav .short { display: none; }
+
+/* --- top of the page --------------------------------------------------------- */
+
+.top { margin-bottom: 5.5rem; }
+
+.wordmark {
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 10vw, 5rem);
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--pink);
+  margin: 0 0 .5rem -.04em;
+}
+
+.role {
+  margin: 0 0 3rem;
+  font-size: 1.15rem;
+  line-height: 1.3;
+  color: var(--text);
+}
+
+.lead {
+  margin: 0 0 2.6rem;
+  max-width: 34rem;
+  font-size: clamp(1.4rem, 3vw, 1.75rem);
+  font-weight: 300;
+  line-height: 1.28;
+  letter-spacing: -.012em;
+  text-wrap: pretty;
+}
+
+.today-block {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0 1.5rem;
+}
+.today { margin: .3rem 0 0; }
+.today-block p { margin: 0 0 1rem; font-size: 1rem; line-height: 1.6; }
+.today-block p:last-child { margin-bottom: 0; }
+
+.top .status {
+  display: flex;
+  align-items: flex-start;
+  gap: .6rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 2.6rem 0 1.3rem;
+}
+.top .status::before { content: none; }
+.top .status a { color: var(--accent); }
+.braille {
+  display: inline-block;
+  flex: none;
+  width: 1.15em;
+  text-align: center;
+  color: var(--pink);
+  font-size: 1.15rem;
+  line-height: 1.3;
+  font-family: "Apple Braille", "Segoe UI Symbol", "DejaVu Sans", sans-serif;
+}
+
+/* links row, built the way Harsh's is: quiet text links in a left-aligned row,
+   a copy icon on Copy Email that turns into a green check when it works */
+.links {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .4rem 1.6rem;
+}
+.links a,
+.links button {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: var(--w-body);
+  color: var(--muted);
+  background: none; border: 0; padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.links a:hover,
+.links button:hover { color: var(--text); text-decoration: none; }
+.copy-email svg { width: .9em; height: .9em; flex: none; }
+.copy-email .i-check { display: none; color: #1f9d55; }
+.copy-email.is-copied { color: var(--text); }
+.copy-email.is-copied .i-copy { display: none; }
+.copy-email.is-copied .i-check { display: block; }
+
+/* --- cards: image first, no chrome ---------------------------------------------- */
+
+.cards { gap: 2.6rem 1.5rem; }
+.cards--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cards--3 .card--feature { grid-column: 1 / -1; }
+@media (min-width: 74rem) { .cards { margin-inline: 0; } }
+
+.card {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+.card:hover { transform: none; border-color: transparent; box-shadow: none; }
+.card:focus-visible { border-radius: 14px; }
+
+.card-media {
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.card:hover .card-media { border-color: var(--pink); }
+.card--feature .card-media { aspect-ratio: 2 / 1; }
+
+.card-body { padding: .95rem 0 0; }
+.card-meta {
+  font-style: italic;
+  font-size: .88rem;
+  line-height: 1.35;
+  color: var(--muted);
+}
+.cards--3 .card:not(.card--feature) .card-meta { min-height: 2.7em; }
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: .3rem 0 .3rem;
+}
+.card-title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: var(--w-display);
+  letter-spacing: -.01em;
+  transition: color .2s ease;
+}
+.card--feature .card-title { font-size: 2rem; }
+.card:hover .card-title,
+.card:focus-visible .card-title { color: var(--accent); }
+.card-desc {
+  margin: 0;
+  max-width: 34rem;
+  font-size: .95rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.card--feature .card-desc { font-size: 1.02rem; }
+.card-arrow { flex: none; width: 1.9rem; height: 1.9rem; color: var(--muted); border-color: var(--line); }
+.card:hover .card-arrow,
+.card:focus-visible .card-arrow { color: #fff; }
+:root[data-theme="dark"] .card:hover .card-arrow { color: var(--bg); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .card:hover .card-arrow { color: var(--bg); }
+}
+.card-media { view-transition-class: hero; }
+
+@media (max-width: 56rem) { .cards--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 40rem) {
+  .cards, .cards--3 { grid-template-columns: 1fr; gap: 2.2rem; }
+  .card--feature .card-media { aspect-ratio: 16 / 10; }
+  .card--feature .card-title { font-size: 1.7rem; }
+  .cards--3 .card:not(.card--feature) .card-meta { min-height: 0; }
+}
+
+/* --- timeline: work and learning on one line ----------------------------------------- */
+
+.tl-key {
+  display: flex; gap: 1.4rem;
+  margin: -.7rem 0 1.8rem;
+  font-size: .95rem;
+  color: var(--muted);
+}
+.tl-key span::before {
+  content: "";
+  display: inline-block;
+  width: .6rem; height: .6rem;
+  margin-right: .5rem;
+  border-radius: 50%;
+  background: var(--pink);
+  vertical-align: .02em;
+}
+.tl-key .k-learn::before { background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--pink); }
+
+.timeline { list-style: none; margin: 0; padding: 0; }
+.tl { display: grid; grid-template-columns: 6.75rem minmax(0, 1fr); }
+.tl-yr {
+  padding-top: .12rem;
+  font-size: .93rem;
+  color: var(--muted);
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+}
+.tl-body {
+  position: relative;
+  padding: 0 0 1.8rem 1.8rem;
+  border-left: 1px solid var(--line);
+}
+.tl:last-child .tl-body { border-left-color: transparent; padding-bottom: 0; }
+.tl-body::before {
+  content: "";
+  position: absolute;
+  left: -.3rem; top: .55rem;
+  width: .6rem; height: .6rem;
+  border-radius: 50%;
+  background: var(--pink);
+}
+.tl--learn .tl-body::before { background: var(--bg); box-shadow: inset 0 0 0 1.5px var(--pink); }
+.tl .name { font-size: 1.1rem; font-weight: 500; line-height: 1.3; }
+.tl .name a { color: var(--accent); }
+.tl .desc { margin-top: .2rem; color: var(--muted); font-size: .96rem; line-height: 1.5; }
+.tl .desc a { color: var(--accent); }
+.tl-note { margin: 1.6rem 0 0; color: var(--muted); font-size: .92rem; }
+.pill { font-size: .75rem; font-variant-caps: all-small-caps; letter-spacing: .06em; }
+
+/* --- what I do --------------------------------------------------------------------- */
+
+.doing { margin: 0; display: grid; gap: .95rem; }
+.doing > div { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0 1.25rem; }
+.doing dt { padding-top: .22rem; }
+.doing dd { margin: 0; font-size: 1rem; line-height: 1.5; }
+
+/* --- footer: plain, with the version -------------------------------------------------- */
+
+.site-foot {
+  display: block;
+  margin-top: 0;
+  padding: 0 1.5rem 2.6rem;
+  border-top: 0;
+  background: none;
+  color: var(--text);
+  font-size: 1rem;
+}
+.foot-inner {
+  max-width: calc(var(--col) - 3rem);
+  margin: 0 auto;
+  padding-top: 2.2rem;
+  border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 1rem 1.5rem;
+}
+.made { margin: 0; font-size: 1rem; }
+.version {
+  padding: .45rem 1.2rem;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-variant-numeric: lining-nums;
+}
+body[data-home] .col { padding-bottom: 1rem; }
+body.has-miniplayer .site-foot { padding-bottom: 6.5rem; }
+@media (max-width: 34rem) { .site-foot { padding-inline: 1.15rem; } }
+
+/* --- case study pages ------------------------------------------------------------------ */
+
+.project-title {
+  font-size: clamp(2.1rem, 5.5vw, 2.8rem);
+  font-weight: var(--w-display);
+  letter-spacing: -.02em;
+}
+.project-sub {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  max-width: 36rem;
+}
+.prose .pullquote {
+  margin: 2.5rem 0;
+  font-size: clamp(1.45rem, 3.4vw, 1.9rem);
+  font-weight: var(--w-display);
+  font-style: italic;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+/* --- gentle reveal on scroll (only when js is running) ------------------------------------ */
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1);
+  transition-delay: var(--d, 0ms);
+}
+.js .reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal, .js .reveal.is-in { opacity: 1; transform: none; transition: none; }
+}
+
+/* --- phones ----------------------------------------------------------------------------- */
+
+@media (max-width: 40rem) {
+  .sidenav .long { display: none; }
+  .sidenav .short { display: inline; }
+  .role { margin-bottom: 2.4rem; }
+  .today-block { grid-template-columns: 1fr; gap: .5rem; }
+  .doing > div { grid-template-columns: 1fr; gap: .1rem; }
+  .tl { grid-template-columns: 5.6rem minmax(0, 1fr); }
+  .tl-yr { font-size: .92rem; }
+  .tl-body { padding-left: 1.3rem; }
+  .links { gap: .4rem 1.3rem; }
+  .foot-inner { flex-direction: column; align-items: flex-start; }
+}
+
+.cards--3 .card:not(.card--feature) .card-title { font-size: 1.25rem; }
+
+#doing { margin-bottom: 4rem; }
+
+
+/* --- timeline: results, case study links, and the "show earlier" fold --------------- */
+
+.tl-result { margin: .4rem 0 0; font-style: italic; font-size: .98rem; line-height: 1.45; color: var(--text); }
+.tl-cases { margin: .3rem 0 0; font-size: .93rem; color: var(--muted); }
+.tl-cases a { color: var(--accent); }
+
+/* the head of the list keeps its line so it runs into the toggle */
+.timeline--head .tl:last-child .tl-body { border-left-color: var(--line); padding-bottom: 1.8rem; }
+
+.tl-earlier > summary {
+  display: grid;
+  grid-template-columns: 6.75rem minmax(0, 1fr);
+  list-style: none;
+  cursor: pointer;
+}
+.tl-earlier > summary::-webkit-details-marker { display: none; }
+.tl-earlier > summary .tl-body { display: block; padding-bottom: 1.8rem; }
+.tl-earlier:not([open]) > summary .tl-body { border-left-color: transparent; padding-bottom: 0; }
+.tl-earlier > summary .tl-body::before {
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+}
+.tl-toggle { display: inline-flex; align-items: center; gap: .4rem; color: var(--accent); font-size: .98rem; }
+.tl-toggle svg { width: .85em; height: .85em; transition: transform .25s ease; }
+.tl-earlier > summary:hover .tl-toggle { text-decoration: underline; text-underline-offset: 3px; }
+.tl-earlier > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.tl-earlier .t-open { display: none; }
+.tl-earlier[open] .t-open { display: inline; }
+.tl-earlier[open] .t-closed { display: none; }
+.tl-earlier[open] .tl-toggle svg { transform: rotate(180deg); }
+.tl-earlier[open] > .timeline { animation: tl-in .35s ease; }
+@keyframes tl-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .tl-earlier[open] > .timeline { animation: none; } }
+@media (max-width: 40rem) { .tl-earlier > summary { grid-template-columns: 5.6rem minmax(0, 1fr); } }

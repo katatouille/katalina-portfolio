@@ -125,7 +125,7 @@ each `captions.txt`; edit them there.
 
  1. Walnut banana muffins packaging label in use
  2. Final logo, and the Authentic Lebanese Hummus packaging label
- 3. First attendance at the local farmer's market: banner, product labels, product layout. Not pictured is the framed menu, which was getting printed at this time.
+ 3. First day at the local farmers market: banner, product labels, product layout. Not pictured is the framed menu, which was getting printed at this time.
  4. Menu for the farmers market
  5. Final chosen logos
  6. Early directions explored before landing on the final mark

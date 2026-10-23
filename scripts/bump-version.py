@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+"""Bump the version shown in the footer of every page.
+
+    python3 scripts/bump-version.py            # patch: 1.1.0 -> 1.1.1  (small fixes)
+    python3 scripts/bump-version.py minor      # minor: 1.1.1 -> 1.2.0  (visible changes)
+    python3 scripts/bump-version.py major      # major: 1.2.0 -> 2.0.0  (a redesign)
+    python3 scripts/bump-version.py --set 1.4.0
+
+The month and year are today's date. The version lives in
+<span class="version">vX.Y.Z Mon YYYY</span> on index.html, work/*.html and
+play/*.html, and index.html is the source of truth.
+"""
+import datetime
+import pathlib
+import re
+import sys
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+PAGES = [ROOT / "index.html", *sorted((ROOT / "work").glob("*.html")), *sorted((ROOT / "play").glob("*.html"))]
+PATTERN = re.compile(r'(<span class="version">)v(\d+)\.(\d+)\.(\d+) [A-Z][a-z]{2} \d{4}(</span>)')
+MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+
+def main(argv):
+    m = PATTERN.search((ROOT / "index.html").read_text(encoding="utf-8"))
+    if not m:
+        sys.exit("No version span found in index.html")
+    major, minor, patch = (int(m.group(i)) for i in (2, 3, 4))
+
+    if "--set" in argv:
+        major, minor, patch = (int(x) for x in argv[argv.index("--set") + 1].split("."))
+    else:
+        kind = argv[0] if argv else "patch"
+        if kind == "major":
+            major, minor, patch = major + 1, 0, 0
+        elif kind == "minor":
+            minor, patch = minor + 1, 0
+        elif kind == "patch":
+            patch += 1
+        else:
+            sys.exit("Use patch, minor, major, or --set X.Y.Z")
+
+    today = datetime.date.today()
+    label = f"v{major}.{minor}.{patch} {MONTHS[today.month - 1]} {today.year}"
+
+    changed = 0
+    for page in PAGES:
+        text = page.read_text(encoding="utf-8")
+        new, n = PATTERN.subn(lambda mm: f"{mm.group(1)}{label}{mm.group(5)}", text)
+        if n and new != text:
+            page.write_text(new, encoding="utf-8")
+            changed += 1
+    print(f"{label}  ({changed} pages updated)")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
