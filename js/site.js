@@ -166,8 +166,7 @@
   toggle.addEventListener("click", function () {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme");
-    var systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var effectiveDark = current ? current === "dark" : systemDark;
+    var effectiveDark = current !== "light";
     var next = effectiveDark ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("theme", next); } catch (e) {}
@@ -369,6 +368,7 @@
 /* ---------- 9. reveal on scroll ---------------------------------------------- */
 
 (function () {
+  [].forEach.call(document.querySelectorAll(".shot:not(.hero)"), function (el) { el.classList.add("reveal"); });
   var items = [].slice.call(document.querySelectorAll(".reveal"));
   if (!items.length) return;
   var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -432,4 +432,25 @@
       requestAnimationFrame(step);
     });
   });
+})();
+
+
+/* ---------------------------------------------------------------
+   11. Reading progress on case studies: a thin pink line at the top
+   --------------------------------------------------------------- */
+(function () {
+  if (document.body.hasAttribute("data-home")) return;
+  var bar = document.createElement("div");
+  bar.className = "progress"; bar.setAttribute("aria-hidden", "true");
+  bar.innerHTML = "<i></i>";
+  document.body.appendChild(bar);
+  var fill = bar.firstChild, busy = false;
+  function update() {
+    busy = false;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    fill.style.transform = "scaleX(" + (max > 0 ? Math.min(1, window.pageYOffset / max) : 0) + ")";
+  }
+  window.addEventListener("scroll", function () { if (!busy) { busy = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener("resize", update);
+  update();
 })();
