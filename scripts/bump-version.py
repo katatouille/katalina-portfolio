@@ -6,9 +6,9 @@
     python3 scripts/bump-version.py major      # major: 1.2.0 -> 2.0.0  (a redesign)
     python3 scripts/bump-version.py --set 1.4.0
 
-The month and year are today's date. The version lives in
-<span class="version">vX.Y.Z Mon YYYY</span> on index.html, work/*.html and
-play/*.html, and index.html is the source of truth.
+The footer shows a quiet "last updated Month YYYY" (today's date). The version
+number lives in <span class="version" data-v="X.Y.Z"> on index.html, work/*.html
+and play/*.html, and index.html is the source of truth.
 """
 import datetime
 import pathlib
@@ -17,15 +17,15 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = [ROOT / "index.html", *sorted((ROOT / "work").glob("*.html")), *sorted((ROOT / "play").glob("*.html"))]
-PATTERN = re.compile(r'(<span class="version">)v(\d+)\.(\d+)\.(\d+) [A-Z][a-z]{2} \d{4}(</span>)')
-MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+PATTERN = re.compile(r'<span class="version" data-v="(\d+)\.(\d+)\.(\d+)">[^<]*</span>')
+MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 
 def main(argv):
     m = PATTERN.search((ROOT / "index.html").read_text(encoding="utf-8"))
     if not m:
         sys.exit("No version span found in index.html")
-    major, minor, patch = (int(m.group(i)) for i in (2, 3, 4))
+    major, minor, patch = (int(m.group(i)) for i in (1, 2, 3))
 
     if "--set" in argv:
         major, minor, patch = (int(x) for x in argv[argv.index("--set") + 1].split("."))
@@ -41,16 +41,17 @@ def main(argv):
             sys.exit("Use patch, minor, major, or --set X.Y.Z")
 
     today = datetime.date.today()
-    label = f"v{major}.{minor}.{patch} {MONTHS[today.month - 1]} {today.year}"
+    label = f"{major}.{minor}.{patch}"
+    shown = f"last updated {MONTHS[today.month - 1]} {today.year}"
 
     changed = 0
     for page in PAGES:
         text = page.read_text(encoding="utf-8")
-        new, n = PATTERN.subn(lambda mm: f"{mm.group(1)}{label}{mm.group(5)}", text)
+        new, n = PATTERN.subn(f'<span class="version" data-v="{label}">{shown}</span>', text)
         if n and new != text:
             page.write_text(new, encoding="utf-8")
             changed += 1
-    print(f"{label}  ({changed} pages updated)")
+    print(f"v{label}, {shown}  ({changed} pages updated)")
 
 
 if __name__ == "__main__":

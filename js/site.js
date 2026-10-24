@@ -166,7 +166,7 @@
   toggle.addEventListener("click", function () {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme");
-    var effectiveDark = current !== "light";
+    var effectiveDark = current === "dark";
     var next = effectiveDark ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("theme", next); } catch (e) {}
@@ -436,10 +436,9 @@
 
 
 /* ---------------------------------------------------------------
-   11. Reading progress on case studies: a thin pink line at the top
+   11. Reading progress on case studies: a thin neon line at the top
    --------------------------------------------------------------- */
 (function () {
-  if (document.body.hasAttribute("data-home")) return;
   var bar = document.createElement("div");
   bar.className = "progress"; bar.setAttribute("aria-hidden", "true");
   bar.innerHTML = "<i></i>";
@@ -453,4 +452,43 @@
   window.addEventListener("scroll", function () { if (!busy) { busy = true; requestAnimationFrame(update); } }, { passive: true });
   window.addEventListener("resize", update);
   update();
+})();
+
+
+/* ---------------------------------------------------------------
+   12. Hover peek: a small preview of the project follows the pointer
+   --------------------------------------------------------------- */
+(function () {
+  var cards = document.querySelectorAll(".card");
+  if (!cards.length || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  var peek = document.createElement("div");
+  peek.className = "peek"; peek.setAttribute("aria-hidden", "true");
+  var img = document.createElement("img"); img.alt = ""; peek.appendChild(img);
+  document.body.appendChild(peek);
+  var x = 0, y = 0, tx = 0, ty = 0, raf = 0;
+  function loop() {
+    x += (tx - x) * 0.2; y += (ty - y) * 0.2;
+    peek.style.transform = "translate3d(" + x + "px," + y + "px,0)";
+    raf = peek.classList.contains("is-on") ? requestAnimationFrame(loop) : 0;
+  }
+  function place(e) {
+    var w = peek.offsetWidth || 240, h = peek.offsetHeight || 180;
+    var col = document.querySelector(".plain");
+    var right = col ? col.getBoundingClientRect().right + 20 : e.clientX + 28;
+    tx = right + w + 16 <= window.innerWidth ? right : Math.min(e.clientX + 28, window.innerWidth - w - 16);
+    ty = Math.min(Math.max(e.clientY - h / 2, 16), window.innerHeight - h - 16);
+  }
+  [].forEach.call(cards, function (card, n) {
+    var src = card.querySelector(".card-media img");
+    if (!src) return;
+    card.addEventListener("mouseenter", function (e) {
+      peek.className = "peek c" + (n % 4);
+      img.src = src.currentSrc || src.src;
+      place(e); x = tx; y = ty;
+      peek.classList.add("is-on");
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+    card.addEventListener("mousemove", place);
+    card.addEventListener("mouseleave", function () { peek.classList.remove("is-on"); });
+  });
 })();
