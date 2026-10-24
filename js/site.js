@@ -482,7 +482,8 @@
     var src = card.querySelector(".card-media img");
     if (!src) return;
     card.addEventListener("mouseenter", function (e) {
-      peek.className = "peek c" + (n % 4);
+      peek.className = "peek";
+      peek.style.borderColor = getComputedStyle(card).getPropertyValue("--hl") || "";
       img.src = src.currentSrc || src.src;
       place(e); x = tx; y = ty;
       peek.classList.add("is-on");
@@ -491,4 +492,77 @@
     card.addEventListener("mousemove", place);
     card.addEventListener("mouseleave", function () { peek.classList.remove("is-on"); });
   });
+})();
+
+
+/* ---------------------------------------------------------------
+   13. Artifacts slideshow: one image at a time, arrows, thumbnails, swipe
+   --------------------------------------------------------------- */
+(function () {
+  var wrap = document.querySelector(".shots[data-artifacts]");
+  if (!wrap) return;
+  var figs = [].slice.call(wrap.querySelectorAll(":scope > .shot"));
+  if (figs.length < 2) return;
+
+  figs.forEach(function (f) { f.classList.remove("reveal", "is-in"); });
+  wrap.classList.add("is-slideshow");
+  wrap.setAttribute("role", "group");
+  wrap.setAttribute("aria-roledescription", "slideshow");
+  wrap.setAttribute("aria-label", "Project artifacts");
+  wrap.tabIndex = 0;
+
+  var bar = document.createElement("div");
+  bar.className = "ss-bar";
+  bar.innerHTML =
+    '<button type="button" class="ss-btn ss-prev" aria-label="Previous image">&larr;</button>' +
+    '<span class="ss-count" aria-live="polite"></span>' +
+    '<button type="button" class="ss-btn ss-next" aria-label="Next image">&rarr;</button>';
+  wrap.insertBefore(bar, wrap.firstChild);
+
+  var stage = document.createElement("div");
+  stage.className = "ss-stage";
+  figs.forEach(function (f) { stage.appendChild(f); });
+  bar.after(stage);
+
+  var thumbs = document.createElement("div");
+  thumbs.className = "ss-thumbs";
+  figs.forEach(function (f, i) {
+    var src = f.querySelector("img");
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "ss-thumb";
+    b.setAttribute("aria-label", "Show image " + (i + 1));
+    if (src) { var t = document.createElement("img"); t.src = src.currentSrc || src.src; t.alt = ""; t.loading = "lazy"; b.appendChild(t); }
+    b.addEventListener("click", function () { go(i); });
+    thumbs.appendChild(b);
+  });
+  wrap.appendChild(thumbs);
+
+  var count = bar.querySelector(".ss-count");
+  var cur = 0;
+  function go(n) {
+    cur = (n + figs.length) % figs.length;
+    figs.forEach(function (f, i) { f.hidden = i !== cur; });
+    [].forEach.call(thumbs.children, function (b, i) {
+      if (i === cur) { b.setAttribute("aria-current", "true"); b.scrollIntoView && thumbs.scrollTo({ left: b.offsetLeft - thumbs.clientWidth / 2 + b.offsetWidth / 2, behavior: "smooth" }); }
+      else b.removeAttribute("aria-current");
+    });
+    count.textContent = String(cur + 1).padStart(2, "0") + " / " + String(figs.length).padStart(2, "0");
+    var next = figs[(cur + 1) % figs.length].querySelector("img");
+    if (next) next.loading = "eager";
+  }
+  bar.querySelector(".ss-prev").addEventListener("click", function () { go(cur - 1); });
+  bar.querySelector(".ss-next").addEventListener("click", function () { go(cur + 1); });
+  wrap.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowLeft") { go(cur - 1); e.preventDefault(); }
+    if (e.key === "ArrowRight") { go(cur + 1); e.preventDefault(); }
+  });
+  var sx = null;
+  stage.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener("touchend", function (e) {
+    if (sx === null) return;
+    var dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+  go(0);
 })();
