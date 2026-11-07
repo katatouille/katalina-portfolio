@@ -200,14 +200,17 @@ a:hover, .copy-email:hover { text-decoration-color: var(--pink-ink); color: var(
 
 /* what i do: labels with comma lists */
 .doing { margin: 0; padding-left: clamp(1.5rem, 6vw, 3.25rem); }
-.doing > div { margin: 0 0 .55rem; line-height: 1.4; }
-.doing dt { display: inline; color: var(--faint); font-size: .9375rem; }
-.doing dt::after { content: ": "; }
-.doing dd { display: inline; margin: 0; }
-.doing ul { display: inline; list-style: none; margin: 0; padding: 0; }
-.doing li { display: inline; font-size: 1rem; }
-.doing li:not(:last-child)::after { content: ", "; color: var(--faint); }
-.doing .tools { margin-top: 1rem; }
+.doing > div { margin: 0 0 1.5rem; }
+.doing dt { display: block; margin-bottom: .5rem; color: var(--faint); font-size: .9375rem; }
+.doing dd { display: block; margin: 0; }
+.doing ul { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 2.5rem; }
+.doing li { font-size: 1rem; line-height: 1.65; break-inside: avoid; }
+.doing .tools { margin-top: 0; }
+.doing .tools ul { columns: 3; }
+@media (max-width: 48rem) {
+  .doing ul { columns: 1; }
+  .doing .tools ul { columns: 2; }
+}
 #doing .lines { margin-bottom: 1rem; }
 .lines li { position: relative; }
 .lines li::before { content: "\2022"; position: absolute; left: -1.05em; color: var(--faint); }
