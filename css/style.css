@@ -208,6 +208,14 @@ a:hover, .copy-email:hover { text-decoration-color: var(--pink-ink); color: var(
 .doing li { display: inline; font-size: 1rem; }
 .doing li:not(:last-child)::after { content: ", "; color: var(--faint); }
 .doing .tools { margin-top: 1rem; }
+#doing .lines { margin-bottom: 1rem; }
+.lines li { position: relative; }
+.lines li::before { content: "\2022"; position: absolute; left: -1.05em; color: var(--faint); }
+.lines li.aside { color: var(--faint); }
+.lines li.aside::before { content: none; }
+.lines.links li::before { content: none; }
+.prose .note { margin-top: 1.25rem; font-size: .875rem; color: var(--faint); max-width: 34rem; }
+.links--top { margin-top: 1rem; padding-left: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; }
 
 /* ---------- footer ------------------------------------------------------------------ */
 
@@ -547,3 +555,63 @@ body:not([data-home]) .col > .artifacts { max-width: none; margin-bottom: 2rem; 
 .is-slideshow .shot.hero img { object-fit: contain; max-height: min(58vh, 34rem); width: auto; }
 .is-slideshow .shot.hero::after { content: none; }
 .is-slideshow .shot img { min-height: 8rem; }
+
+
+/* ---------- peek words: hover (or tap) a word to see a photo -------------------------------
+   index.html wraps the words in <span data-peek="key">; js/site.js section 14 turns a span into
+   a button only once its photo has loaded, so a word with no photo yet just stays plain text.
+   Desktop: the card sits fixed on the right side of the screen.
+   Phones, tablets and narrow windows: it docks to the bottom (or the top, if the word is
+   low on the screen) and a tap anywhere else closes it. */
+
+.peek-word {
+  display: inline; margin: 0; padding: 0; border: 0; border-radius: 3px; background: none;
+  font: inherit; letter-spacing: inherit; word-spacing: inherit; color: inherit; text-align: inherit;
+  -webkit-appearance: none; appearance: none; cursor: pointer;
+  text-decoration: underline wavy var(--pu, var(--u-cyan));
+  text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-skip-ink: none;
+  transition: background-color .15s, box-shadow .15s;
+}
+.peek-word:hover, .peek-word.is-open, .peek-word:focus-visible {
+  background: var(--pf, var(--f-cyan)); color: #111; text-decoration-color: transparent;
+  box-shadow: 0 0 0 .14em var(--pf, var(--f-cyan));
+}
+.peek-word.pw-lime   { --pu: var(--u-lime);   --pf: var(--f-lime); }
+.peek-word.pw-orange { --pu: var(--u-orange); --pf: var(--f-orange); }
+.peek-word.pw-pink   { --pu: var(--u-pink);   --pf: var(--f-pink); }
+.peek-word.pw-cyan   { --pu: var(--u-cyan);   --pf: var(--f-cyan); }
+
+.peek-card {
+  position: fixed; z-index: 55; margin: 0;
+  right: clamp(1rem, 4vw, 3.5rem); top: 50%;
+  width: 16rem; padding: .5rem .5rem .65rem;
+  background: var(--bg); border: 3px solid var(--pf, var(--f-cyan)); border-radius: 4px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .18);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(-50%) rotate(var(--tilt, -2deg)) scale(.96);
+  transition: opacity .18s ease, transform .3s cubic-bezier(.2, .7, .2, 1), visibility 0s linear .3s;
+}
+.peek-card.is-on {
+  opacity: 1; visibility: visible;
+  transform: translateY(-50%) rotate(var(--tilt, -2deg)) scale(1);
+  transition: opacity .18s ease, transform .3s cubic-bezier(.2, .7, .2, 1), visibility 0s;
+}
+.peek-card img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 2px; background: var(--bg-soft); }
+.peek-card figcaption { margin: .5rem .2rem 0; font-size: .9375rem; line-height: 1.3; font-style: italic; color: var(--text); }
+.peek-card figcaption:empty { display: none; }
+
+@media (max-width: 48rem), (hover: none) {
+  .peek-card {
+    right: auto; left: 50%; top: auto; bottom: calc(6.5rem + env(safe-area-inset-bottom, 0px));
+    width: min(15rem, 68vw);
+    transform: translateX(-50%) translateY(14px) rotate(var(--tilt, -2deg)) scale(.96);
+  }
+  .peek-card.is-on { pointer-events: auto; transform: translateX(-50%) rotate(var(--tilt, -2deg)) scale(1); }
+  .peek-card.at-top { bottom: auto; top: 1rem; transform: translateX(-50%) translateY(-14px) rotate(var(--tilt, -2deg)) scale(.96); }
+  .peek-card.at-top.is-on { transform: translateX(-50%) rotate(var(--tilt, -2deg)) scale(1); }
+  .peek-card img { aspect-ratio: 4 / 3; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .peek-card, .peek-card.is-on { transition: opacity .01s, visibility 0s; }
+}
+@media print { .peek-card { display: none; } }

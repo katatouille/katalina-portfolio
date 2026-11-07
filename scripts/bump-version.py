@@ -6,7 +6,7 @@
     python3 scripts/bump-version.py major      # major: 1.2.0 -> 2.0.0  (a redesign)
     python3 scripts/bump-version.py --set 1.4.0
 
-The footer shows a quiet "last updated Month YYYY" (today's date). The version
+The footer shows a quiet "Last updated Month YYYY" (today's date). The version
 number lives in <span class="version" data-v="X.Y.Z"> on index.html, work/*.html
 and play/*.html, and index.html is the source of truth.
 """
@@ -42,7 +42,7 @@ def main(argv):
 
     today = datetime.date.today()
     label = f"{major}.{minor}.{patch}"
-    shown = f"last updated {MONTHS[today.month - 1]} {today.year}"
+    shown = f"Last updated {MONTHS[today.month - 1]} {today.year}"
 
     changed = 0
     for page in PAGES:

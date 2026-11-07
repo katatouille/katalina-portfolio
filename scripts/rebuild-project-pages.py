@@ -43,6 +43,19 @@ FIG_RE = re.compile(
     r'<figcaption class="plate-caption">(?P<cap>.*?)</figcaption>\s*</figure>', re.S)
 FIELD_RE = re.compile(r'<div class="field">\s*<h2>(.*?)</h2>\s*(.*?)\s*</div>', re.S)
 
+
+def meta_desc(text, limit=158):
+    """First whole sentences that fit, so link previews never end mid-word."""
+    text = " ".join(text.split())
+    if len(text) <= limit:
+        return text
+    cut = text[:limit + 1]
+    for stop in (". ", "? ", "! "):
+        i = cut.rfind(stop)
+        if i > 80:
+            return cut[:i + 1]
+    return cut[:cut.rfind(" ")].rstrip(" ,;:") + "."
+
 def strip_tags(s):
     s = re.sub(r'<[^>]+>', '', s)
     for a, b in [('&amp;','&'),('&rsquo;',"'"),('&nbsp;',' '),('&mdash;','-'),
@@ -213,7 +226,7 @@ for section, slug, title, next_href, next_name in PAGES:
 <script src="../js/site.js?v=20261003"></script>
 </body>
 </html>
-""".format(title=title, desc=strip_tags(lede)[:165], section=section,
+""".format(title=title, desc=meta_desc(strip_tags(lede)), section=section,
            sub=sub, rail=rail_html, body=body_html)
 
     open(os.path.join(ROOT, section, slug + ".html"), "w", encoding="utf-8").write(html)

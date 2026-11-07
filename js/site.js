@@ -334,33 +334,37 @@
    the label reads "Copied Email" with a green check for a couple of seconds. */
 
 (function () {
-  var btn = document.querySelector(".copy-email");
-  if (!btn) return;
-  var email = btn.getAttribute("data-email");
-  var label = btn.querySelector(".ce-label");
-  var status = document.querySelector("[data-copy-status]");
-  var timer = null;
+  var btns = document.querySelectorAll(".copy-email");
+  if (!btns.length) return;
 
-  function done() {
-    btn.classList.add("is-copied");
-    label.textContent = "Copied Email";
-    if (status) status.textContent = "Email address copied";
-    clearTimeout(timer);
-    timer = setTimeout(function () {
-      btn.classList.remove("is-copied");
-      label.textContent = "Copy Email";
-      if (status) status.textContent = "";
-    }, 2000);
-  }
+  Array.prototype.forEach.call(btns, function (btn) {
+    var email = btn.getAttribute("data-email");
+    var label = btn.querySelector(".ce-label");
+    var rest = label ? label.textContent : "copy email";
+    var status = btn.parentNode.querySelector("[data-copy-status]");
+    var timer = null;
 
-  btn.addEventListener("click", function () {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(email).then(done, function () {
-        window.location.href = "mailto:" + email;
-      });
-    } else {
-      window.location.href = "mailto:" + email;
+    function done() {
+      btn.classList.add("is-copied");
+      if (label) label.textContent = "copied";
+      if (status) status.textContent = "Email address copied";
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        btn.classList.remove("is-copied");
+        if (label) label.textContent = rest;
+        if (status) status.textContent = "";
+      }, 2000);
     }
+
+    btn.addEventListener("click", function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(email).then(done, function () {
+          window.location.href = "mailto:" + email;
+        });
+      } else {
+        window.location.href = "mailto:" + email;
+      }
+    });
   });
 })();
 
@@ -565,4 +569,246 @@
     if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1));
   }, { passive: true });
   go(0);
+})();
+
+
+/* ---------------------------------------------------------------
+   14. Peek words: hover (or tap) a word to see a photo and caption
+   The words and their photos live in index.html: <span data-peek="key"> in the
+   copy, and a JSON block (#peek-data) with the photos for each key. Several
+   photos per key is fine; each new hover shows the next one.
+   A word only becomes interactive once its first photo has loaded, so a word
+   with no photo yet stays plain text and nothing looks broken.
+   Mouse: hover. Keyboard: focus (Enter shows the next photo, Esc closes).
+   Touch: tap to open, tap again or tap anywhere else to close.
+   --------------------------------------------------------------- */
+(function () {
+  var spans = [].slice.call(document.querySelectorAll("[data-peek]"));
+  var dataEl = document.getElementById("peek-data");
+  if (!spans.length || !dataEl) return;
+  var data;
+  try { data = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+  var card = document.createElement("figure");
+  card.className = "peek-card"; card.setAttribute("aria-hidden", "true");
+  var img = document.createElement("img"); img.alt = ""; img.decoding = "async";
+  var cap = document.createElement("figcaption");
+  card.appendChild(img); card.appendChild(cap);
+  var live = document.createElement("div");
+  live.className = "sr-only"; live.setAttribute("role", "status");
+  document.body.appendChild(card); document.body.appendChild(live);
+
+  // open index.html#peekdemo to preview with stand-in pictures before real photos exist
+  var DEMO = window.location.hash === "#peekdemo";
+  var current = null, openedBy = "mouse", lastType = "mouse", y0 = 0, token = 0;
+  var dockQuery = window.matchMedia("(max-width: 48rem), (hover: none)");
+
+  function preload(p, done) {
+    if (p.state === "ok") return done(true);
+    if (p.state === "bad") return done(false);
+    var im = new Image();
+    im.onload = function () { p.state = "ok"; done(true); };
+    im.onerror = function () {
+      if (DEMO) {                                          // preview mode: stand-in picture
+        var label = (p.cap || "photo").replace(/[<>&"]/g, "");
+        p.src = "data:image/svg+xml;utf8," + encodeURIComponent(
+          '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800"><rect width="800" height="800" fill="#ffd6e8"/>' +
+          '<text x="400" y="400" font-family="Georgia,serif" font-size="56" text-anchor="middle" fill="#111">your photo here</text>' +
+          '<text x="400" y="470" font-family="Georgia,serif" font-size="36" text-anchor="middle" fill="#555">' + label + '</text></svg>');
+        p.state = "ok"; return done(true);
+      }
+      p.state = "bad"; done(false);
+    };
+    im.src = p.src;
+  }
+
+  // drop photos from the front of the list until one loads
+  function firstGood(item, done) {
+    (function t() {
+      if (!item.photos.length) return done(false);
+      preload(item.photos[0], function (ok) {
+        if (ok) return done(true);
+        item.photos.shift(); t();
+      });
+    })();
+  }
+
+  function hide() {
+    token++;
+    if (current) { current.classList.remove("is-open"); current.setAttribute("aria-expanded", "false"); }
+    current = null;
+    card.classList.remove("is-on");
+    live.textContent = "";
+  }
+
+  // advance = show the next photo of the word that is already open
+  function show(btn, how, advance) {
+    if (current === btn && !advance) return;
+    var item = btn._peek;
+    var mine = ++token;
+    var tries = item.photos.length;
+
+    (function next() {
+      if (!tries--) return;
+      var i = (item.i + 1) % item.photos.length;
+      var p = item.photos[i];
+      preload(p, function (ok) {
+        if (mine !== token) return;                       // moved on to something else
+        if (!ok) { item.i = i; return next(); }           // a missing photo: skip it
+        item.i = i;
+
+        if (current && current !== btn) {
+          current.classList.remove("is-open"); current.setAttribute("aria-expanded", "false");
+        }
+        current = btn; openedBy = how; y0 = window.pageYOffset;
+        btn.classList.add("is-open"); btn.setAttribute("aria-expanded", "true");
+
+        img.src = p.src;
+        img.style.objectPosition = p.pos || "";
+        cap.textContent = p.cap || "";
+        live.textContent = p.cap || "";
+        card.style.setProperty("--pf", "var(--f-" + item.color + ")");
+        card.style.setProperty("--tilt", item.tilt + "deg");
+
+        // docked layout: if the card would cover the word, flip it to the top
+        var flip = false;
+        if (dockQuery.matches) {
+          var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+          var top = window.innerHeight - rem * 6.5 - (card.offsetHeight || 260);
+          flip = btn.getBoundingClientRect().bottom > top - 8;
+        }
+        card.classList.toggle("at-top", flip);
+        card.classList.add("is-on");
+
+        // warm up the next photo so the following hover is instant
+        if (item.photos.length > 1) preload(item.photos[(i + 1) % item.photos.length], function () {});
+      });
+    })();
+  }
+
+  function upgrade(span) {
+    var item = data[span.getAttribute("data-peek")];
+    if (!item || !item._ok) return;
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "peek-word pw-" + item.color;
+    b.textContent = span.textContent;
+    b.setAttribute("aria-expanded", "false");
+    b._peek = item;
+
+    b.addEventListener("pointerdown", function (e) { lastType = e.pointerType || "mouse"; });
+    b.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") show(b, "mouse"); });
+    b.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse" && current === b) hide(); });
+    b.addEventListener("focus", function () { if (b.matches(":focus-visible")) show(b, "key"); });
+    b.addEventListener("blur", function () { if (current === b) hide(); });
+    b.addEventListener("click", function (e) {
+      if (e.detail === 0) { show(b, "key", true); return; }   // Enter / Space: next photo
+      if (lastType === "mouse") return;                        // hover already showed it
+      if (current === b) hide(); else show(b, "touch");
+    });
+    span.replaceWith(b);
+  }
+
+  // find out which keys actually have a photo, then upgrade their words
+  var keys = {};
+  spans.forEach(function (s) { var k = s.getAttribute("data-peek"); (keys[k] = keys[k] || []).push(s); });
+  var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); };
+  idle(function () {
+    Object.keys(keys).forEach(function (k) {
+      var item = data[k];
+      if (!item || !item.photos || !item.photos.length) return;
+      item.photos.forEach(function (p) { p.state = ""; });
+      item.color = item.color || "cyan";
+      item.tilt = item.tilt || -2;
+      item.i = -1;
+      firstGood(item, function (ok) {
+        if (!ok) return;
+        item._ok = true;
+        keys[k].forEach(upgrade);
+      });
+    });
+  });
+
+  document.addEventListener("pointerdown", function (e) {
+    if (current && !(e.target.closest && e.target.closest(".peek-word"))) hide();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") hide(); });
+  window.addEventListener("resize", hide);
+  window.addEventListener("scroll", function () {
+    if (current && openedBy !== "key" && Math.abs(window.pageYOffset - y0) > 40) hide();
+  }, { passive: true });
+})();
+
+
+/* ---------- animated favicon ------------------------------------------------------
+   The k tile drifts through the site's neon palette. An animated GIF favicon only
+   animates in Firefox, so this redraws a small canvas instead, which works in every
+   browser. Honors prefers-reduced-motion; the static PNG/SVG stays the fallback. */
+(function () {
+  var mq = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)");
+  if (!mq || mq.matches) return;
+  if (typeof Path2D === "undefined") return;
+  var cv = document.createElement("canvas");
+  var ctx = cv.getContext && cv.getContext("2d");
+  if (!ctx) return;
+
+  var SIZE = 64, R = 15.4;
+  cv.width = cv.height = SIZE;
+  var u = SIZE / 100;                       /* the mark is drawn in a 100 unit box */
+  var K = new Path2D("M766.3 535.4 872.4 710 1309.7 149.2 1430.9 98.5V0H966.4V98.5L965.8 117L683.8 481.3H419.4V664.3H701.5L959.6 899.5L805.9 933.8V1032.5H1358V933.8L1205.1 900.4ZM525.4 142.8 668.1 105.8V0H61.6V105.8L209.5 142.8V1206.1Q196.5 1212.8 163.1 1228.8Q129.7 1244.8 87.3 1265.1Q44.9 1285.4 5.9 1304.9V1406.4L472 1488.2H547.9L525.4 1242.4Z");
+  var KS = 0.038972, KTX = 22.002, KTY = 79.000;
+  var INK = "#141416";
+  var PAL = [[200, 228, 74], [62, 224, 196], [95, 208, 240], [167, 139, 250], [255, 90, 165], [255, 90, 71], [255, 147, 64]];
+
+  var SEG = 4200;                           /* ms per colour, so a full lap is ~29s */
+  var STEP = 500;                           /* ms between redraws, 2fps is plenty */
+  var link = null, timer = null;
+
+  function mix(a, b, t) {
+    return "rgb(" + Math.round(a[0] + (b[0] - a[0]) * t) + "," +
+                    Math.round(a[1] + (b[1] - a[1]) * t) + "," +
+                    Math.round(a[2] + (b[2] - a[2]) * t) + ")";
+  }
+
+  function draw(now) {
+    var pos = (now % (SEG * PAL.length)) / SEG;
+    var i = Math.floor(pos), t = pos - i;
+    var a = mix(PAL[i % PAL.length], PAL[(i + 1) % PAL.length], t);
+    var b = mix(PAL[(i + 1) % PAL.length], PAL[(i + 2) % PAL.length], t);
+
+    ctx.clearRect(0, 0, SIZE, SIZE);
+    var grad = ctx.createLinearGradient(0, 0, SIZE, SIZE);
+    grad.addColorStop(0, a);
+    grad.addColorStop(1, b);
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    if (ctx.roundRect) { ctx.roundRect(0, 0, SIZE, SIZE, R); } else { ctx.rect(0, 0, SIZE, SIZE); }
+    ctx.fill();
+
+    ctx.save();
+    ctx.setTransform(KS * u, 0, 0, -KS * u, KTX * u, KTY * u);
+    ctx.fillStyle = INK;
+    ctx.fill(K);
+    ctx.restore();
+
+    if (!link) {
+      var old = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+      link = document.createElement("link");
+      link.rel = "icon";
+      link.type = "image/png";
+      document.head.appendChild(link);
+      for (var j = 0; j < old.length; j++) old[j].parentNode.removeChild(old[j]);
+    }
+    link.href = cv.toDataURL("image/png");
+  }
+
+  function tick() { draw(performance.now()); }
+
+  tick();
+  timer = setInterval(tick, STEP);
+  if (mq.addEventListener) {
+    mq.addEventListener("change", function (e) {
+      if (e.matches && timer) { clearInterval(timer); timer = null; }
+    });
+  }
 })();
