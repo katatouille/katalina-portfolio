@@ -592,8 +592,13 @@
   var card = document.createElement("figure");
   card.className = "peek-card"; card.setAttribute("aria-hidden", "true");
   var img = document.createElement("img"); img.alt = ""; img.decoding = "async";
+  var vid = document.createElement("video");
+  vid.muted = true; vid.loop = true; vid.playsInline = true; vid.preload = "metadata";
+  vid.setAttribute("playsinline", ""); vid.setAttribute("muted", ""); vid.style.display = "none";
   var cap = document.createElement("figcaption");
-  card.appendChild(img); card.appendChild(cap);
+  card.appendChild(img); card.appendChild(vid); card.appendChild(cap);
+  var stillOnly = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function isVid(src) { return /\.(mp4|webm|ogv)(\?|$)/i.test(src); }
   var live = document.createElement("div");
   live.className = "sr-only"; live.setAttribute("role", "status");
   document.body.appendChild(card); document.body.appendChild(live);
@@ -606,6 +611,14 @@
   function preload(p, done) {
     if (p.state === "ok") return done(true);
     if (p.state === "bad") return done(false);
+    if (isVid(p.src)) {                                  // a clip: metadata is enough
+      var v = document.createElement("video");
+      v.muted = true; v.preload = "metadata";
+      v.onloadedmetadata = function () { p.state = "ok"; done(true); };
+      v.onerror = function () { p.state = "bad"; done(false); };
+      v.src = p.src;
+      return;
+    }
     var im = new Image();
     im.onload = function () { p.state = "ok"; done(true); };
     im.onerror = function () {
@@ -638,6 +651,7 @@
     if (current) { current.classList.remove("is-open"); current.setAttribute("aria-expanded", "false"); }
     current = null;
     card.classList.remove("is-on");
+    vid.pause();
     live.textContent = "";
   }
 
@@ -663,8 +677,23 @@
         current = btn; openedBy = how; y0 = window.pageYOffset;
         btn.classList.add("is-open"); btn.setAttribute("aria-expanded", "true");
 
-        img.src = p.src;
-        img.style.objectPosition = p.pos || "";
+        var isV = isVid(p.src);
+        img.style.display = isV ? "none" : "";
+        vid.style.display = isV ? "" : "none";
+        if (isV) {
+          if (vid.getAttribute("src") !== p.src) vid.setAttribute("src", p.src);
+          if (p.poster) vid.poster = p.poster;
+          vid.style.objectPosition = p.pos || "";
+          try { vid.currentTime = 0; } catch (e) {}
+          if (!stillOnly.matches) {
+            var play = vid.play();
+            if (play && play.catch) play.catch(function () {});
+          }
+        } else {
+          vid.pause();
+          img.src = p.src;
+          img.style.objectPosition = p.pos || "";
+        }
         cap.textContent = p.cap || "";
         live.textContent = p.cap || "";
         card.style.setProperty("--pf", "var(--f-" + item.color + ")");
