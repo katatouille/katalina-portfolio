@@ -218,6 +218,7 @@ a:hover, .copy-email:hover { text-decoration-color: var(--pink-ink); color: var(
 .lines li.aside::before { content: none; }
 .lines.links li::before { content: none; }
 .prose .note { margin-top: 1.25rem; font-size: .875rem; color: var(--faint); max-width: 34rem; }
+.intro { margin: 1.25rem 0 0; max-width: 34rem; font-size: 1.0625rem; line-height: 1.55; }
 .links--top { margin-top: 1rem; padding-left: 0; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; }
 
 /* ---------- footer ------------------------------------------------------------------ */
